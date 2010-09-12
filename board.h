@@ -237,6 +237,7 @@ int generateTentativeQuiescentMoveList(const Board * const b, Move *movelist);
 int checkRepetitionDraw(Board * board);
 int canMove(Board * const board);
 
+/*
 inline int x88ToStandard(const int x88);
 inline int standardTox88(const int standard);
 inline int x88PosToRow(const int pos);
@@ -245,4 +246,50 @@ inline int posToRow(const int pos);
 inline int posToCol(const int pos);
 inline int rowColToPos(const int row, const int col);
 inline int x88RowColToPos(const int row, const int col);
+*/
+
+static inline int rowColToPos(const int row, const int col)
+{
+	return (row << 3) + col;
+}
+
+static inline int x88RowColToPos(const int row, const int col)
+{
+	return (row << 4) + col;
+}
+
+
+static inline int posToRow(const int pos)
+{
+	return (pos >> 3);
+}
+
+static inline int posToCol(const int pos)
+{
+	return (pos & 7);
+}
+
+static inline int x88PosToRow(const int pos)
+{
+	return (pos >> 4);
+}
+
+static inline int x88PosToCol(const int pos)
+{
+	return (pos & 7);
+}
+
+
+
+static inline int x88ToStandard(const int x88)
+{
+	return (x88 & 7) | ((x88 & 0x70) >> 1);
+}
+
+static inline int standardTox88(const int standard)
+{
+	return (standard & 7) | ((standard & 0x38) << 1);
+}
+
+
 #endif

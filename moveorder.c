@@ -110,7 +110,7 @@ void orderMoveList(Board *board, Move *movelist,
 	}
 }
 
-inline void updateKiller(Board *b, Move *m) {
+void updateKiller(Board *b, Move *m) {
 	Killer temp;
 	int i = 0, score = 1, swapper;
 	while ((i < KILLERS) && ((b->killers[b->ply][i].move.from != m->from) ||
@@ -134,19 +134,16 @@ inline void updateKiller(Board *b, Move *m) {
 	}
 }
 
-inline void clearKillers(Board *b, int depth) {
+void clearKillers(Board *b, int depth) {
 	Killer temp = {NOMOVE,0};
 	int i = 0;
 	for (; i < KILLERS; i++) b->killers[depth][i] = temp;
 }
 
-inline Move getKiller(Board *b, int depth, int which) {
-	return b->killers[depth][which].move;
-}
 
 /* decrease values in history table
 Thanks to Tord Romstad for the idea */
-inline void makeBetaersSmaller(Board *b) {
+void makeBetaersSmaller(Board *b) {
 	int i,j,k;
 	
 	for (i = 0; i < 2; i++)

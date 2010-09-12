@@ -1,5 +1,5 @@
 /* 
-	small potato - test multithreaded chess program
+	smallpotato - multithreaded chess program
 
 	Copyright (C) 2000 Alejandro Dubrovsky
 
@@ -15,10 +15,6 @@
 	You should have received a copy of the GNU General Public License
 	along with this program; if not, write to the Free Software Foundation,
 	Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  
-
-#include <termios.h>
-#include <grp.h>
-#include <pwd.h>
 */
 
 #include "common.h"
@@ -377,13 +373,6 @@ int main(int argc, char **argv)
 			}
 		} else {
 			state->name = (char *) xstrdup (PACKAGE_STRING);
-			/*	(char *) xmalloc(strlen("Small potato ") + strlen(VERSION) + 1);
-			tempcheck = state->name;
-			state->name = strcpy(state->name, "Small potato ");
-			state->name = strcat(state->name, VERSION);
-			if (tempcheck != state->name) {
-				printf("fucked\n");
-			}*/
 		}
 
 	}

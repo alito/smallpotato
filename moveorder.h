@@ -24,9 +24,14 @@
 
 void orderMoveList(Board *board, Move *movelist, 
 		int totalmoves, int *moveorder, Move *suggmove);
-inline void updateKiller(Board *b, Move *m);		
-inline void clearKillers(Board *b, int depth);
-inline Move getKiller(Board *b, int depth, int which);
-inline void makeBetaersSmaller(Board *b);
+void updateKiller(Board *b, Move *m);
+void clearKillers(Board *b, int depth);
+//inline Move getKiller(Board *b, int depth, int which);
+void makeBetaersSmaller(Board *b);
+
+
+static inline Move getKiller(Board *b, int depth, int which) {
+	return b->killers[depth][which].move;
+}
 
 #endif

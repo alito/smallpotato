@@ -905,4 +905,6 @@ Tue Aug 10 09:41:32 PM EST 2004 Alejandro Dubrovsky <alito@organicrobot.com>
     eval.c:  Add fianchetto bonus to try to avoid predilection for Kf1/8 when bishop in
     fianchetto
     
+Tue 2010/09/13 Alejandro Dubrovsky <alito@organicrobot.com>
+    board.h, moveorder.h:  Move a couple of functions to the includes to help get them inlined.
 	

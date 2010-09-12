@@ -22,50 +22,6 @@
 #include "search.h"
 #include "eval.h"
 
-inline int rowColToPos(const int row, const int col)
-{
-	return (row << 3) + col;
-}
-
-inline int x88RowColToPos(const int row, const int col)
-{
-	return (row << 4) + col;
-}
-
-
-inline int posToRow(const int pos)
-{
-	return (pos >> 3);
-}
-
-inline int posToCol(const int pos)
-{
-	return (pos & 7);
-}
-
-inline int x88PosToRow(const int pos)
-{
-	return (pos >> 4);
-}
-
-inline int x88PosToCol(const int pos)
-{
-	return (pos & 7);
-}
-
-
-
-inline int x88ToStandard(const int x88)
-{
-	return (x88 & 7) | ((x88 & 0x70) >> 1);
-}
-
-inline int standardTox88(const int standard)
-{
-	return (standard & 7) | ((standard & 0x38) << 1);
-}
-
-
 void setColorTotals(Board * board) {
 	int i = 0, wvalue = 0, bvalue = 0;
 
