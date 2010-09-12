@@ -1,0 +1,21 @@
+Begin3
+Title:		small potato
+Version:	@VERSION@
+Entered-date:	@ISODATE@
+Description:	test multithreaded chess program
+		@configure_input@
+		Please edit small potato.lsm.in to fix the Keywords and
+		Primary-site entries, add several more lines of
+		description here if appropriate, and to delete these
+		instructions.
+Keywords:	[substitute your keywords here]
+Author: 	alito@organicrobot.com (Alejandro Dubrovsky)
+Maintained-by:	alito@organicrobot.com (Alejandro Dubrovsky)
+Primary-site:	metlab.unc.edu pub/Linux/apps/some/directory
+		31k smallpotato-@VERSION@.tar.gz
+		500  smallpotato.lsm
+Alternate-site: 
+Original-site:  
+Platforms:      
+Copying-policy:	GNU copyleft
+End

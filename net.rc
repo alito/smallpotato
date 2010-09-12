@@ -1,0 +1,87 @@
+#This is a sample configuration file for small potato with comments
+#The entries are in the format key = value
+#Lines starting with a # are ignored so can be used as comments
+#Keys case is ignored so HashKilobytes can be written as HASHKILOBYTES
+#Filenames can be specified through their full path, or through relative path
+#Note that command line choices override configuration file choices
+
+
+# Transposition table size can be specified by either size in kilobytes, as in
+HashKilobytes = 262144
+# (that is 32 megabytes)
+# or as in size in number of entries such as:
+# HashEntries = 4000000
+# (if both are specified, hash entries takes precedence
+
+#The file where the log should be written to is specified through
+LogFile = thelog
+
+#The file where the games should be recorded is specified through
+GameFile = thegames.pgn
+
+#The opening book to be used can be specified through
+BookFile = book.opn
+
+#if you would rather not use an opening book then you should set
+# NoBook = 1
+
+#The file that describes the value of the pieces is specified through
+ValueFile = aleweights.out
+
+#if you would like to use no valuefile at all then you should set
+# NoValueFile = 1
+
+#The name that small potato should report for itself can be specified through
+# ComputerName = Fruit Salad Muncher
+# (if this isn't specified, a default is gotten from the version number and valuefile used)
+#The score deficit at which to resign can be set through
+Resign = 6.5
+# if you want it never to resign then use
+# NoResign = 1
+
+#The amount of randomness introduced into the evaluation can be specified through
+Random = 2
+# (if that is set to 0, or commented out, then no randomness will be used)
+# (randomness is useful because it means small potato won't play two games in identical
+# manner)
+
+#If you want to limit the maximum search depth, that can be specified through
+# MaxDepth = 8
+
+#Verbosity level can be set through
+Verbose = 1
+#the higher the verbosity, the more information that will be logged.  If this isn't specified
+#or it is set to 0, then no log will be written
+
+#If you want to record the game, set
+Record = 1
+# (Any value there will set this, even 0)
+
+#The searching algorithm can be changed by specifying
+Searcher = NegaScout
+# Other possible options are (case isn't important)
+# MTDf - for MTD(f) searching
+# Random - chooses one move at random from the legal set
+# OneStep - It chooses what is best at depth = 1
+# Complete - Does a minimax, without any cutoffs or optimisations
+# FixedDepth - Alpha-beta to a fixed depth (specified through the maxdepth option)
+# AlphaBeta - Standard iterative-deepening alpha-beta
+# Note that not all of the algorithms are not guaranteed to be in working order in 
+# all versions
+
+#The evaluation function to be used is set by
+Evaluation = Standard
+# Other possible options are:
+# Relative - chooses the algorithm used in 0.5.0 and earlier - pretty much identical but
+# it tries hard (too hard in my opinion) to simplify if it's ahead
+
+
+#The minimum depth to consider an epd succesful
+EpdMinDepth = 6
+
+#How much a draw is worth.  Positive numbers means a draw is a good thing.  Negative a
+#bad thing.  In hundredth of a pawn
+DrawValue = 0
+
+#How aggressive to be with time.  Should be a number between 1 and 100.
+TimeAggression = 35
