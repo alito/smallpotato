@@ -135,7 +135,7 @@
 #define PACKAGE "small-potato"
 
 /* Define to the address where bug reports for this package should be sent. */
-#define PACKAGE_BUGREPORT "s328940@student.uq.edu.au"
+#define PACKAGE_BUGREPORT "alito@organicrobot.com"
 
 /* Define to the full name of this package. */
 #define PACKAGE_NAME "Small Potato"

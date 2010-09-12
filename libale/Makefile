@@ -71,7 +71,7 @@ AUTOMAKE = ${SHELL} /home/ale/programming/chess/smallpotato/missing --run automa
 AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -O2 -march=athlon -mtune=athlon
+CFLAGS = -O2 -march=native -mtune=native
 CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo
@@ -96,7 +96,7 @@ MAKEINFO = ${SHELL} /home/ale/programming/chess/smallpotato/missing --run makein
 MKDIR_P = /bin/mkdir -p
 OBJEXT = o
 PACKAGE = small-potato
-PACKAGE_BUGREPORT = s328940@student.uq.edu.au
+PACKAGE_BUGREPORT = alito@organicrobot.com
 PACKAGE_NAME = Small Potato
 PACKAGE_STRING = Small Potato 0.6.1
 PACKAGE_TARNAME = small-potato

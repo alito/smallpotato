@@ -1,0 +1,3 @@
+CFLAGS="-pipe -g -W -Wall -Winline -march=core2 -mcpu=core2 -fno-strict-aliasing" configure
+make clean && make && cp smallpotato nsmallpotato
+
