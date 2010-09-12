@@ -78,7 +78,7 @@ AUTOMAKE = ${SHELL} /home/ale/programming/chess/smallpotato/missing --run automa
 AWK = gawk
 CC = gcc
 CCDEPMODE = depmode=gcc3
-CFLAGS = -O2 -march=native -mtune=native
+CFLAGS = -pipe -O -ggdb -W -Wall -Wextra -Winline -Wfloat-equal -Wshadow -Wmissing-noreturn -Wmissing-format-attribute -march=core2 -mcpu=core2 -fno-strict-aliasing
 CPP = gcc -E
 CPPFLAGS = 
 CYGPATH_W = echo

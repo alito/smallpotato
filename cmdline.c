@@ -3,7 +3,7 @@
   (http://wsd.iitb.fhg.de/~kir/clighome/)
 
   The command line parser `clig':
-  (C) 1995---2001 Harald Kirsch (kirschh@lionbioscience.com)
+  (C) 1995-2004 Harald Kirsch (clig@geggus.net)
 *****/
 
 #include <stdio.h>
@@ -322,7 +322,7 @@ getLongOpts(int argc, char **argv, int i,
     for a bit more values than cmax.
   *****/
   alloced = cmin + 4;
-  *values = calloc((size_t)alloced, sizeof(long));
+  *values = (long int *)calloc((size_t)alloced, sizeof(long));
   if( ! *values ) {
 outMem:
     fprintf(stderr, 
@@ -334,7 +334,7 @@ outMem:
   for(used=0; (cmax==-1 || used<cmax) && used+i+1<argc; used++) {
     if( used==alloced ) {
       alloced += 8;
-      *values = realloc(*values, alloced*sizeof(long));
+      *values = (long int*) realloc(*values, alloced*sizeof(long));
       if( !*values ) goto outMem;
     }
 
@@ -805,53 +805,52 @@ catArgv(int argc, char **argv)
 void
 usage(void)
 {
-  fprintf(stderr, "usage: %s%s", Program, "\
- [-help] [-V] [-random] [-complete] [-onestep] [-multistep] [-negascout] [-fixed] [-relative] [-record] [-position] [-nobook] [-noresign] [-norecord] [-log logfile] [-gamefile gamefile] [-values valuefile] [-config configfile] [-compname computername] [-book bookfile] [-guiveup resign] [-d d] [-r randomvariance] [-hs hashsize] [-hk hashkilobytes] [-mindepth epdmindepth] [-draw drawvalue] [-v verbose]\n\
-    IETF protocol 2 compliant chess engine\n\
-       -help: show usage information\n\
-          -V: show program version\n\
-     -random: play random moves\n\
-   -complete: play full negamax\n\
-    -onestep: play with depth of one\n\
-  -multistep: play with fixed depth alpha-beta cutoff algorithm\n\
-  -negascout: play with iterative deepening negascout algorithm (default)\n\
-      -fixed: evaluate board by fixed piece values\n\
-   -relative: evaluate board by relative proportion to opponent\n\
-     -record: record game\n\
-   -position: evaluate board by piece values relative to position\n\
-     -nobook: do not use opening book\n\
-   -noresign: never resign\n\
-   -norecord: do not record the game\n\
-        -log: file where to write all spurious output messages\n\
-              1 char* value\n\
-   -gamefile: file where to record the games\n\
-              1 char* value\n\
-     -values: file specifying pieces values\n\
-              1 char* value\n\
-     -config: configuration file - default is sp.rc, or sp.ini \n\
-              1 char* value\n\
-   -compname: name to report for the engine \n\
-              1 char* value\n\
-       -book: opening book file\n\
-              1 char* value\n\
-    -guiveup: Pawn values deficit at which to resign (default is 6.5, will be ignored if combined with -relative) \n\
-              1 float value\n\
-          -d: maximum depth of search\n\
-              1 int value between 0 and 100\n\
-          -r: randomness introduced into the evaluation algorithm as a percentage of a pawn's value\n\
-              1 int value\n\
-         -hs: number of entries in hash table (will be deprecated)\n\
-              1 int value between 0 and oo\n\
-         -hk: hash table size in kilobytes\n\
-              1 int value between 0 and oo\n\
-   -mindepth: minimum depth at which an epd can be considered solved\n\
-              1 int value between 0 and oo\n\
-       -draw: value, in hundredth of a pawn, of a draw\n\
-              1 int value\n\
-          -v: verbosity level\n\
-              1 int value between 0 and oo\n\
-version: 0.6.1\n\
-");
+  fprintf(stderr,"%s","   [-help] [-V] [-random] [-complete] [-onestep] [-multistep] [-negascout] [-fixed] [-relative] [-record] [-position] [-nobook] [-noresign] [-norecord] [-log logfile] [-gamefile gamefile] [-values valuefile] [-config configfile] [-compname computername] [-book bookfile] [-guiveup resign] [-d d] [-r randomvariance] [-hs hashsize] [-hk hashkilobytes] [-mindepth epdmindepth] [-draw drawvalue] [-v verbose]\n");
+  fprintf(stderr,"%s","      IETF protocol 2 compliant chess engine\n");
+  fprintf(stderr,"%s","         -help: show usage information\n");
+  fprintf(stderr,"%s","            -V: show program version\n");
+  fprintf(stderr,"%s","       -random: play random moves\n");
+  fprintf(stderr,"%s","     -complete: play full negamax\n");
+  fprintf(stderr,"%s","      -onestep: play with depth of one\n");
+  fprintf(stderr,"%s","    -multistep: play with fixed depth alpha-beta cutoff algorithm\n");
+  fprintf(stderr,"%s","    -negascout: play with iterative deepening negascout algorithm (default)\n");
+  fprintf(stderr,"%s","        -fixed: evaluate board by fixed piece values\n");
+  fprintf(stderr,"%s","     -relative: evaluate board by relative proportion to opponent\n");
+  fprintf(stderr,"%s","       -record: record game\n");
+  fprintf(stderr,"%s","     -position: evaluate board by piece values relative to position\n");
+  fprintf(stderr,"%s","       -nobook: do not use opening book\n");
+  fprintf(stderr,"%s","     -noresign: never resign\n");
+  fprintf(stderr,"%s","     -norecord: do not record the game\n");
+  fprintf(stderr,"%s","          -log: file where to write all spurious output messages\n");
+  fprintf(stderr,"%s","                1 char* value\n");
+  fprintf(stderr,"%s","     -gamefile: file where to record the games\n");
+  fprintf(stderr,"%s","                1 char* value\n");
+  fprintf(stderr,"%s","       -values: file specifying pieces values\n");
+  fprintf(stderr,"%s","                1 char* value\n");
+  fprintf(stderr,"%s","       -config: configuration file - default is sp.rc, or sp.ini \n");
+  fprintf(stderr,"%s","                1 char* value\n");
+  fprintf(stderr,"%s","     -compname: name to report for the engine \n");
+  fprintf(stderr,"%s","                1 char* value\n");
+  fprintf(stderr,"%s","         -book: opening book file\n");
+  fprintf(stderr,"%s","                1 char* value\n");
+  fprintf(stderr,"%s","      -guiveup: Pawn values deficit at which to resign (default is 6.5, will be ignored if combined with -relative) \n");
+  fprintf(stderr,"%s","                1 float value\n");
+  fprintf(stderr,"%s","            -d: maximum depth of search\n");
+  fprintf(stderr,"%s","                1 int value between 0 and 100\n");
+  fprintf(stderr,"%s","            -r: randomness introduced into the evaluation algorithm as a percentage of a pawn's value\n");
+  fprintf(stderr,"%s","                1 int value\n");
+  fprintf(stderr,"%s","           -hs: number of entries in hash table (will be deprecated)\n");
+  fprintf(stderr,"%s","                1 int value between 0 and oo\n");
+  fprintf(stderr,"%s","           -hk: hash table size in kilobytes\n");
+  fprintf(stderr,"%s","                1 int value between 0 and oo\n");
+  fprintf(stderr,"%s","     -mindepth: minimum depth at which an epd can be considered solved\n");
+  fprintf(stderr,"%s","                1 int value between 0 and oo\n");
+  fprintf(stderr,"%s","         -draw: value, in hundredth of a pawn, of a draw\n");
+  fprintf(stderr,"%s","                1 int value\n");
+  fprintf(stderr,"%s","            -v: verbosity level\n");
+  fprintf(stderr,"%s","                1 int value between 0 and oo\n");
+  fprintf(stderr,"%s","  version: 0.6.1\n");
+  fprintf(stderr,"%s","  ");
   exit(EXIT_FAILURE);
 }
 /**********************************************************************/

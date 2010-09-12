@@ -9,3 +9,8 @@ syntax: glob
 *.pgn
 *.a
 .deps
+oldversions
+smallpotato
+psmallpotato
+gsmallpotato
+

@@ -5,7 +5,7 @@
 ## Adapted for autoproject by Jim Van Zandt <jrv@vanzandt.mv.com>
 
 ## The Name specified is only used in/for the manual page
-Name "Small Potato"
+Name "smallpotato"
 
 ## Usage specifies a one-liner which is printed as part of
 ## usage-message. It is also used in the NAME-section of the manual
