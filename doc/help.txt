@@ -1,0 +1,48 @@
+
+smallpotato: unknown option `--help'
+
+usage: smallpotato [-help] [-V] [-random] [-complete] [-onestep] [-multistep] [-negascout] [-fixed] [-relative] [-record] [-position] [-nobook] [-noresign] [-norecord] [-log logfile] [-gamefile gamefile] [-values valuefile] [-config configfile] [-compname computername] [-book bookfile] [-guiveup resign] [-d d] [-r randomvariance] [-hs hashsize] [-hk hashkilobytes] [-mindepth epdmindepth] [-draw drawvalue] [-v verbose]
+    IETF protocol 2 compliant chess engine
+       -help: show usage information
+          -V: show program version
+     -random: play random moves
+   -complete: play full negamax
+    -onestep: play with depth of one
+  -multistep: play with fixed depth alpha-beta cutoff algorithm
+  -negascout: play with iterative deepening negascout algorithm (default)
+      -fixed: evaluate board by fixed piece values
+   -relative: evaluate board by relative proportion to opponent
+     -record: record game
+   -position: evaluate board by piece values relative to position
+     -nobook: do not use opening book
+   -noresign: never resign
+   -norecord: do not record the game
+        -log: file where to write all spurious output messages
+              1 char* value
+   -gamefile: file where to record the games
+              1 char* value
+     -values: file specifying pieces values
+              1 char* value
+     -config: configuration file - default is sp.rc, or sp.ini 
+              1 char* value
+   -compname: name to report for the engine 
+              1 char* value
+       -book: opening book file
+              1 char* value
+    -guiveup: Pawn values deficit at which to resign (default is 6.5, will be ignored if combined with -relative) 
+              1 float value
+          -d: maximum depth of search
+              1 int value between 0 and 100
+          -r: randomness introduced into the evaluation algorithm as a percentage of a pawn's value
+              1 int value
+         -hs: number of entries in hash table (will be deprecated)
+              1 int value between 0 and oo
+         -hk: hash table size in kilobytes
+              1 int value between 0 and oo
+   -mindepth: minimum depth at which an epd can be considered solved
+              1 int value between 0 and oo
+       -draw: value, in hundredth of a pawn, of a draw
+              1 int value
+          -v: verbosity level
+              1 int value between 0 and oo
+version: 0.6.1

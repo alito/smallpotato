@@ -1,0 +1,908 @@
+2000-12-25  Alejandro Dubrovsky  <s328940@student.uq.edu.au>
+
+	* unches: initial version.
+
+2001-02-07
+
+    changed to version 0.1.1
+    
+    ai.c: fixed evaluation of best value when queening pawns
+	introduced heap sorting for all moves at first level ordered by evaluation
+	
+2001-02-08
+    ai.c:  lots of bugfixing of heap
+    utils.c:  added printBoard and pieceToChar
+    ai.c:  added board printing if setboard was used
+	    fixed bug where new wouldn't play
+	    made finer grained time cuttoffs possible
+    board.c:  fixed bug where castling was possible when rooks weren't there
+    created hash.c
+    
+2001-02-09
+    ai.c:   output error for non-implemented features
+    
+2001-02-12
+    played on fics for a while.  much better than expected.
+    utils.c:  parseResult stupidity fixed
+    ai.c: print result if it is passed from the server
+	changed relativeheuri to positionheuri
+	replaced relativeheuri by a white / black value (normalised on log scale)
+    board.c:  stupidity where if one person moved their rook, the opponent couldn't castle
+    ai.c:  added continuous reseeking for fics
+    left playing on fics overnight (lightning c 1850, blitz c 1550)
+    
+2001-02-13
+    utils.c:  added parseRatings
+	    added printing ratings and time controls to the game header
+    board.c:  fixed bug where king next to king moves were allowed in some cases
+
+2001-02-14
+    changed to version 0.1.2
+    
+2001-02-15
+    unches.c:   changed the relative flag to be a modifier and added position flag
+    ai.c:	added a position and a relative position evaluation functions.
+    
+2001-02-16
+    ai.c:	changed the timing so that increments account for the no-increment-on-the-last-
+	    move effect
+    unches.c:	added option for hash size
+    hash.c:	wrote initialiseHashTable, clearHashTable and getHashKey
+    board.c:	modified movePiece to modify the new bitboard (used in hashing)
+    ai.c:	modified iterativedeepening to insert hash values and newalphabeta to retrieve
+	added hard time limit for searches
+
+2001-02-17
+    board.c:	fixed bug where board.fifty wasn't being reset to 0 so any game with over 100
+	non-pawn and nontake moves was considered internally as a draw
+	Added movePieceAndHash which also adds the current hash value to the board.history
+    ai.c:	changed iterativedeepening and newalphabeta use movePieceAndHash
+    board.c:	Added isRepetitionDraw.
+
+2001-03-11
+    board.c:   Fixed isRepetitionDraw.
+    ai.c:	added check for repetition draw
+    
+2001-03-13
+    cmdline.conf.in:	Increased default hash size to about 2 million
+			Changed verbosity level to be an integer
+    ai.c:		debugging info sprinkled
+	changed all position values back to default
+	increased range of returned values by the relative evaluators by ten
+
+2001-03-14
+    ai.c:	reintroduced random variance
+		when tree is pruned return cut values instead of current best to avoid
+		bad moves getting in through random variance
+		Play forced moves immediately
+    Changed version to 0.1.3
+
+2001-03-17
+    hash.c:	changed hashing scheme to Zobrist hashing
+    board.c:	changed movePieceAndHash to make use of the possible speedup of Zobrist hashing
+
+2001-03-23
+    created procvalues.py
+    board.c:	Added loading value matrices from file
+    
+2001-03-25
+    ai.c:  changed popHeap and insertIntoHeap into negamax (always maximise)
+	    changed iterativeDeepening and newalphabeta to negamax
+	    
+2001-03-26
+    ai.c:	added basic negamax for comparison        
+    hash.c:	split hash tables into white and black hashtables
+    ai.c:	according changes to newalphabeta and iterativedeepening
+    hash.c:	add storage of best move in hash table
+
+2001-03-27
+    ai.c:	use hashed best suggested move and beta cut off
+		store best move and beta cut off
+		add debugging for hashed events
+
+    
+2001-03-28
+    ai.c:	fix hash initialisation for Zobrist hashing
+		use suggested move even if betacut
+
+2001-03-31
+    split ai.c into ai.c, search.c and eval.c
+    created search.h and eval.h
+    added include files to Makefile.am
+
+somewhere in between:
+    added storing of alpha cut off, pruning on hashed alpha cut off, 
+    using hashed alpha and beta values, storing only on worthless information.
+
+2001-04-15
+    search.c:	fixed the extremely annoying hash bug (b->blackturn not attempt.blackturn)
+		fixed random to adapt to beta cutoffs returns
+		
+2001-04-16
+    Changed version to 0.1.4
+    Added compname command line argument to choose engine's name
+    Changed variable passed to io function to be the engineParameters
+    
+2001-04-17
+    board.c:  Fixed a repetition check bug
+        
+hmmmm....long break
+
+Mon Oct 01 01:09:49 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	search.c:	Shortened code used for trying each piece when coronating.
+	Added libale as a subdirectory.  Made it a compilable separate GNU tools style
+	package.
+	
+Mon Oct 01 03:57:04 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	Bumped version to 0.1.5
+	
+Mon Oct 01 08:44:50 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	A bit of documentation all over the place
+	search.c:  Hopefully fixed the hashtable loading and storing. (maybe i broke it though)
+					Added more debugging
+	Increased default hashsize to about 4 million
+						
+Mon Oct 01 09:33:19 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	Bumped version to 0.2.0
+	Split search.c into basicsearch.c, alphabetasearch.c and mtdf.c
+	
+Tue Oct 02 05:06:59 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	alphabetasearch.c:  Fixed flags returned, to work properly with random variations.
+	
+Tue Oct 02 07:49:01 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	mtdf.c:  Finished first pass at a working iterativemtdf, mtdf, and unrolled alpha-beta.
+	Made mtdf default engine.  Added flag for old alphabeta.
+	
+Tue Oct 02 09:41:04 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	mtdf.c:	Got rid of move passing optimisation, since it can't handle stored moves
+				easily
+				
+Tue Oct 02 11:46:40 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	mtdf.c:  Reinstated move-passing-as-int, and handled finding index of new moves.
+				Now check previous best move first.
+	mtdf.c:	Modified when the hash table is overwritten
+	alphabetasearch.c:	Same
+						
+Wed Oct 03 06:30:05 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	Bumped version to 0.2.1
+	
+Wed Oct 03 10:07:37 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	mtdf.c:  Added verynewalphabeta.  Does internal iterative deepening.  Templated on
+				newalphabeta.  MTDf uses it now.
+	mtdf.c:	Use exact hash values better.  Fix bug where flags weren't set properly if
+				the hash value was not going to be overwritten.
+	alphabetasearch.c:	Same with newalphabeta.
+	
+Wed Oct 03 13:14:44 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	board.c:	Fixed ancient bug in en-pasant hashing in movePieceAndHash!
+	
+Wed Oct 03 13:25:22 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	board.c: Another bug in movePieceAndHash, bitboard setting when castling.
+	
+Wed Oct 03 18:57:04 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	board.c: Added generateMoveList to generate all legal moves at a node
+	mtdf.c:  verynewalphabeta now uses generateMoveList
+				unrolledalphabeta now skipped. Unnecessary. So jump straight to
+				verynewalphabeta.  This caused a massive decrease in nodes searched
+				and in some very obvious bugs. 
+	
+Tue Oct 09 21:05:52 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	mtdf.c:  Fixed obvious bug in hash-value storage.  
+				got rid of unrolledalphabeta (not needed)
+				
+	Bumped version to 0.2.2
+
+Tue Oct 09 21:24:52 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	alphabetasearch.c:  Fixed the same obvious bug in hash-value storage
+
+Thu Oct 11 15:55:04 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>				
+	all:  Changed GPL wording to just version 2.
+	mtdf.c:	got rid of allmoves storage and all associated stuff in iterativemtdf
+	
+Thu Oct 11 16:43:22 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	Recreated search.c for common search functions.
+
+Thu Oct 11 20:22:29 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	search.c: First implementation of quiescentsearch.
+	mtdf.c:  make verynewalphabeta use quiescentsearch.
+	
+Thu Oct 11 21:02:44 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	mtdf.c:  Fixed stupid bug when calling quiescentsearch.
+	mtdf.c:	Fixed initial best to MINVALUE - 1 in iterativemtdf and verynewalphabeta
+	alphabetasearch.c:  Same in newalphabeta and iterativedeepening
+	search.c:  Same in quiescentsearch.
+	alphabetasearch.c:  Make newalphabeta use quiescentsearch.
+	
+Fri Oct 12 14:17:49 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	board.c:  Added generateQuiescentMoveList
+	split common.h into ai.h, pieces.h, piecesstruct.h, communication.h, hash.h,
+	hashstruct.h and board.h.
+	search.c: changed name of functions to capitalise wordBeginnings
+	alphabetasearch.c:  Same
+	mtdf: Same
+	basicsearch: same
+
+Fri Oct 12 14:47:58 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	search.c:  Make quiescentsearch use generateQuiescentMoveList
+	mtdf.c:  Make iterativemtdf use generateMoveList
+				Make verynewalphabeta skip the 0th branch and jump straight to quiescent
+					
+Fri Oct 12 16:20:32 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	added heap.h and heap.c for the heapsort handling
+	search.c:  Added orderMoveList (to order a list of moves, does not much for the moment)
+	mtdf.c:  Simplified verynewalphabeta by using orderMoveList
+	search.c:  Same as above with quiescentsearch
+	Too many changes.  Buggy.
+
+Fri Oct 12 17:10:52 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	search.c:  Fixed silly bug in orderMoveList where it always pointed to first move.
+	
+Fri Oct 12 21:17:10 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	alphabetasearch.c:  Fixed bug in hash storing (yet again).
+	mtdf.c:  Same
+	search.c:  Same
+	search.c:  Fixed logic of quiescent search.
+	That seemed to do the trick.  Consistently getting to depth 6 with standard weights
+	(4-5 with more complicated evaluation tables)
+	
+Fri Oct 12 22:51:26 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	search.c:  Added the possibility of a bit of randomness through move ordering
+	mtdf.c:  Added randomness if in parameters on iterativemtdf
+
+Sat Oct 13 19:47:50 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	Bumped version to 0.2.3
+	Moved orderMoveList from search.c to eval.c
+
+Sun Oct 14 14:52:34 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	board.c: Tiny optimisation to inCheck		
+	mtdf.c:  Fix nasty bug in verynewalphabeta where the checkmate move wasn't being returned.
+	search.c:	Strip checkmate and draw checks from quiescentsearch.
+	
+Mon Oct 15 16:09:02 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	ai.c, mtdf.c:  Added hash, evals, node and quiescent node count and reporting
+	
+Mon Oct 15 17:37:49 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	eval.c:  Added move ordering based on piece captured and capturer.
+	common.h:  Added history tables to engineParameter structure.
+	mtdf.c:  Added storing of beta cuttoffs in history.
+	search.c: same as above
+	eval.c:  Use history tables for moveordering.
+	mtdf.c:  Fix checkmates to prefer earlier if ours, and later if theirs (not the other
+				way around)
+				
+	
+Fri Oct 19 05:37:53 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	mtdf.c:  Added better time management to mtdf. (max of 2 times supposed time)
+	
+Fri Oct 19 06:35:29 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	mtdf.c:  Added timecheck in verynewalphabeta (seems needed)
+	
+Fri Oct 19 23:21:15 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	utils.c:  Added moveToSan to write moves in SAN format.
+	ai.c:  Changed move output to use moveToSan.
+	mtdf.c:  Same
+	utils.c:  Added printPGNHeader.
+	ai.c:  Use PGN header.  Mostly PGN compliant output.
+	
+Sat Oct 20 20:33:18 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	Bumped version to 0.2.4
+	ai.c: Stupid bug in release (crash on startup when not recording)
+	
+Sun Oct 21 00:54:50 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	ai.c:  Changed getting current move from parameters->movenumber to board->ply to
+			fix some problems with adjourned games.
+	alphabetasearch.c:  Same
+	mtdf.c:	Same
+	
+Mon Oct 22 03:44:37 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	doIO.c:  Added new unches specific interface command to convert from traditional move
+				to SAN
+	communication.h:  Corresponding changes
+	ai.c:	Same
+	Converted all played games to PGN!
+
+Tue Oct 30 04:39:57 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	eval.c:  Added randomisePieceValues and added an original copy of piece values.
+				Randomising scheme changed so that the piece values are slightly randomised.
+				Got rid of random character of orderMoveList
+	ai.c:		Call randomisePieceValues at beginning of each game
+
+Tue Oct 30 05:02:49 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	mtdf.c:	Modify checkmate score to hopefully prevent checkmate shakes
+	
+Wed Oct 31 02:13:06 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	board.c:  Modified hashing to get rid of the bitboard keeping, and switch all 
+				random numbers and the key to 64-bit numbers.  Changed from keeping tabs of
+				king and rooks moved, to queen and king castle availability.
+				Added modification of hash depending on castling availability.
+				This has the sideeffect of making the hash size much more flexible (no
+				need for it to be a power of two any more)
+	boardstruct.h:  same
+	hash.c:	same
+	hashstruct.h:	same
+	alphabetasearch.h:	same
+	utils.c:	same
+	mtdf.c:	same
+	search.c:	same
+
+Thu Nov 01 14:53:09 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	mtdf.c:	No need to order moves on first iteration.  Don't store result in
+				hash table.
+	eval.c:	Make sure both wvalue and bvalue are positive before dividing in
+				realtivepositionheuri
+	hash.c:	Changed creation of 64 bit random numbers to use all 64 bits (random() returns
+				31 random bits, not 32)
+
+Fri Nov 02 20:39:24 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	mtdf.c:	check if out of time after reduced depth search
+	
+Fri Nov 02 22:12:25 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	search.c:  Think i fixed the instability bug that has been causing stupid moves
+				to be played. (it wasn't setting best to the current in quiescentsearch
+				if it wasn't better than alpha) (Note:  False alarm, instability still there
+				almost certainly caused by hashing)
+	mtdf.c:	turned off reduced search depth for a while.  not sure it's any good
+	
+Mon Nov 05 02:08:13 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	pieces.c:	Fixed long standing bug where the king could castle into an opponent's 
+					piece.
+	utils.c:		Fixed notation on en-passant in moveToSan.
+
+Sat Nov 17 01:15:07 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	board.c:		Add pawn captures to generateQuiescentSearch.
+	bumped version to 0.2.5
+	
+Sat Nov 17 02:53:42 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	unches.c:	Added valuefile used to default name
+	Made my own position values.  Jumped to 2080 in lightning, 1850 in blitz on FICS
+	
+Sun Nov 25 05:37:34 EST 2001 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	utils.c:		Fixed printResult to take proper care of undecided games.
+
+Sun Feb 03 06:35:24 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	utils.c, doIO.c:  Fixed 'deprecated use of label at end of compound statement' warning
+	from gcc
+		
+Sun Feb 17 00:11:17 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	Since it's been so long:
+	bump version to 0.3.0
+	Changed name to 'Small Potato'
+	
+Sun Feb 17 02:49:48 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	Wrote some benchmarks.
+	Around 1.4 million move/unmove cycles/sec in Duron 1 gig
+	Around 7-800000 moves generated/sec
+
+Sun Feb 17 13:53:01 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	board.h, board.c:  Modified board so that moves are reversible.
+	Added unMove.  move/unmove gone up to 5 million cycles/sec, moves generated
+	to 1.2 million/sec
+	mtdf.c, search.c, board.c:  Start using unmove instead of copying board
+	bench.c, bench.h:  New files, for benchmarks and tests.  Put benchmoveunmove,
+	benchmovegen in there.  Added perft to test move generator, similar to crafty.
+	benchmovecycle around 980000 /sec
+	
+Sun Feb 17 19:58:29 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	ai.c:  Implemented Undo and Remove from the xboard protocol
+	
+Wed Feb 20 06:08:55 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	board.c:  Correct small bug in isRepetitionDraw.
+
+Wed Feb 20 15:36:17 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	mtdf.c:  Don't time out unless depth > 2
+	Looking at the logs, totalnodes /sec have gone up to around 150000
+	bench.c:  Added sp_bencheval.  relativePositionHeuri gets around 1 million/sec.		
+	
+Wed Feb 20 17:49:37 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	mtdf.c:  In veryNewAlphaBeta, don't check for stalemate or checkmate until the node
+		where it happens, therefore saving the canMove call, but it means that 
+		checkmate detection is reduced by one.  Total nodes/sec are at around 230000
+
+Tue Feb 26 01:16:33 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	pieces.c:  changed kingCanMove to use move/unmove.
+	Released 0.3.0
+	Bumped version to 0.3.1			
+	
+Sun Mar 03 05:26:17 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	board.c, board.h:  Added generateTentativeMoveList to generate moves that also would
+		leave the player in check.
+	mtdf.c:  Changed veryNewAlphaBeta to use generateTentativeMoveList and return
+		ILLEGAL_POSITION in case of -1 moves being generated.
+
+Mon Mar 04 04:21:39 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	board.c, board.h:  Added generateTentativeQuiescentMoveList same modification of
+		normal version as above.
+	search.c:  Changed quiescentSearch to use generateTentativeQuiescentMoveList.
+	mtdf.c:  Added check for no legal moves for veryNewAlphaBeta.
+	After all that, it seems to reach shallower depths. Total nodes per second are down to
+	160000 /sec as well.  
+	generateTentativeMoveList is twice as fast as generateMoveList though.
+	search.c:  Don't store hash if depth is 0 and same key (ie, same situation)
+	
+Wed Mar 06 02:38:12 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	pieces.c:  Changed pieceCanMove to an array of function pointers.
+	
+Wed Mar 06 19:35:13 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	pieces.c:	Created array of moves pieceMoves
+	alphabetasearch.c, basicsearch.c, board.c:  Use pieceMoves instead of getMoves.
+
+Fri Mar 08 16:52:01 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	alphabetasearch.c:  Fix to use move/unMove instead of copy/move.
+	basicsearch.c:  Same.   (But in a very dodgy way, so not sure if it works)
+	Stating again:  move/unmove 5.2 million/sec, movegen to 1.5 million moves/sec (off
+	initial board, should be slower later on), movecycle to 1.1 million /sec
+
+Mon Apr 01 04:52:01 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	mtdf.c:  Changed percentage of time being taken before another depth is searched
+	from 20 to 25%  (yes, daring :)
+
+Wed Apr 03 18:12:29 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	Due to an unexpected windows version appearing in the winboard forum, released 
+	version 0.3.2 with improved documentation
+	Bumped version to 0.3.3
+	
+Thu Apr 04 23:22:44 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	communication.h, utils.c: Changed a couple of feature enum constants to make them 
+	ammenable to the cygwin environment.
+	Makefile.am:  add cmdline.h so that it can be compiled without the presence of clig
+	common.h:  include system.h (doh!)
+	configure.in:  check for the existence of error.h
+	libale/xmalloc.c:  if error.h does not exist, write a crappy hacky version
+	system.h: clean up to include only once.  define pthread_yield as sched_yield in case of
+	cygwiness
+	Should now compile straight out of the box in cygwin (except for the clig thing)
+	
+Fri Apr 05 03:21:30 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	ai.c:  Modify play to perform a blocking getAction when not pondering and not its turn
+	to try to avoid using cpu time on badly behaving OSes (win98 only reported case)
+	
+Sun Apr 07 01:09:16 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	communication.h:  added SP_EPDLINE and SP_EPDSUITE
+	bench.c:  added benchEPDSuite and benchEPDLine to be parse epd lines and suites
+	mtdf.c:  iterativeMTDF: Added handling of epd cases.
+	Can now do EPD testing for the "avoid move" and "best move" ops.  Checking if the
+	move is the one sought is very dodgy though (moveToSan and strcmp), should right
+	a SAN parser.
+	
+Sun Apr 07 20:33:52 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	utils.c:  Swapped the results and result comment printing so that scid picks it up.
+	book.c and book.h:  New files to add opening book support.  Trying to keep the API nice
+	and clean.  Implemented initialiseOpeningBook for opening a book for reading, 
+	createOpeningBook for writing, closeOpeningBook for closing the book.
+	
+Mon Apr 08 00:26:07 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	utils.c:  Bit the bullet, wrote sanToMove.
+	bench.c:  Use sanToMove in the epd testing.
+	
+Mon Apr 08 03:59:54 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	doIO.c, ai.c, mtdf.c:  Added support for POST and NOPOST from the IETF protocol.
+	Post just the first move since that's all we've got.
+	bench.c:  benchEPDLine: Use the current timelimit per problem if one exists.  keep
+	a tab of total/solved in benchEPDSuite.
+	mtdf.c:  Use all the time available if we are using timelimit instead of the percentage
+	
+Tue Apr 09 03:37:35 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	book.c:  Added addBookMove, getBookMove and getBookHash.  addBookMove adds the move to
+	the current board, or, if the move is already there, increase its ranking.  getBookMove
+	gets all moves for current board and returns a weighted random move according to its
+	ranking.
+	cmdline.cli.in:  added -nobook option for avoiding using a book and -book <file> to 
+	specify the name of the book.
+	communication.h, doIO.c:  Added sp_modifybook and sp_closebook.
+	ai.c:  play:  when sp_modifybook is called, a book is created or modified and the 
+	engine switches to book mode, which is similar to force mode, except that every
+	move is added to the book.  Also added sp_sanbookmove to add book moves in san
+	mtdf.c:  try getBookMove before everything.
+	utils.c:  fix small bug in san parsing
+	
+Tue Apr 09 10:10:09 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	left it reading the first ten moves of Arturo Ochoa's p2600 from Dann Corbit's ftp site
+	Now, we've a book.
+	Also, tamed down my weights.
+	
+Wed Apr 10 00:54:40 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	cmdline.cli.in, hash.c:  Added -hk option to specify hashtable size in kilobytes.
+	Default is now around 32 MB.
+	utils.c:  Fixed a bug in sanToMove where it didn't disambiguate properly if one of
+	the moves left the mover in check.
+	Now recreates the book without errors.
+	
+Thu Apr 11 04:35:32 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	Made it load aleweights.out by default
+	Released 0.3.3
+	
+Tue Jul 02 19:50:33 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	After long hiatus, reassess.  Change versioning so that it is bumped just before
+	release.  v0.3.3 came 24th/33 on 9/32 in WBEC's 5th division and so got relegated to 6th.
+	Also 37th/46 on RWBC's Open Class.
+	
+Wed Jul 03 00:03:40 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	Make program nicer.  Get rid of total* globals (incorporate into board struct), move
+	a couple of variables from engineParameters to Board
+
+Wed Jul 03 18:27:16 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	Massive code modification.  Remove engineParameter structure, put everything in Board
+	(which should probably be called State now).  Input and output handling threads now get a
+	threadParameter.  
+	Split doc and tools directory.
+	
+Fri Jul 05 02:55:58 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	ai.c:  Added handleActionWhileInSearch to handle input during the search.
+	mtdf.c:  Updated to check for input during search.  Move Now works correctly now.
+	
+Fri Jul 05 04:12:08 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	mtdf.c, ai.c:  Now handling analyse mode correctly too (even though very uglyly)
+	
+Mon Jul 08 01:49:54 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	search.c, mtdf.c:  Made calculateFinishTime into a function.  Called from mtdf.
+	
+Mon Jul 08 22:22:20 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	search.c, mtdf.c:  Converted iterativeMTDf into a generic timed iterative framework,
+	making MTDf a special case.  Plonked it in search.c.
+
+Wed Jul 10 03:09:27 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	Transforming move generation into 0x88 style (basing on Bruce Moreland's page).
+	This touches pretty much everything.  Hash, book, movePiece(andHash) and 
+	generate*MoveList functions done (since most work is now pushed onto the piece 
+	generation functions)
+	procvalues.py now pads the missing 64 with zeros
+	
+Wed Jul 10 22:49:14 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	InCheck and isLegal modified.  Lots of utils transformed.  
+	All the piece generation done.  Something not working as perft is too low.
+	(small change to the quiescent search nodes.  Now pawnGenerateCaptures will also
+	produce coronations.)
+			
+Thu Jul 11 03:19:52 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	Stupid bug in move generation by the bishop fixed.  Perft now seems to be
+	about 80% faster.  Maybe worth it.
+	Stamped out another million x88-move related bugs all over the place.  Decided
+	for the moment to not modify the book format since i don't feel like remaking it.
+	This means that all accesses to the book are slower than they should be since the
+	notation format is necessary, but the book isn't called very often anyway.
+	Got rid of all the pieceCanMove functions, replaced by a generic slow one.  Shouldn't
+	be called from anywhere fast in any case.
+	There's probably a couple of bugs left, but there shouldn't	be too many (for the x88
+	related stuff that is.  Nothing else fixed).  Also, nothing but MTDf has been moved over.
+	Will do so soon.
+	
+	Official benchmarks (duron 1 Ghz):  perft 5 at 2.3 million/sec, move/unmove at 4.9 
+	million/sec (why the slowdown?), benchmovegen at 2.6 million/sec, benchmovecycle at
+	1.6 million/sec (ok, so that's about 50%, worth it?)
+	Still producing illegal moves though.
+
+Thu Jul 11 23:47:29 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	ai.c, doIO.c:  changed sp_sanbookmove to sp_sanmove and its corresponding code to a copy
+	(yuk) of usermove.  This means that we can now use standard san (this is for pgn parsing)
+	The usermove bit should be converted into a function but i'm too lazy to round up all the
+	local variables at the moment.
+	Wrote setboardfrompgn.py to set the engine at a specific point from pgn for debugging
+	(at least the illegal move bug is reproduceable)	
+	Caught the stupid bug (in movePieceAndHash)
+
+Fri Jul 12 06:43:28 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	utils.c:  Fixed just-introduced-FEN-parsing-bug based on perft numbers posted on CCC.
+
+Sun Jul 14 21:39:12 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	hash.c:  Fixed bug introduced in getHashKey  
+	bench.c:  Fixed bug introduced in benchEPDLine (freeing board)	
+	mtdf.c:  Fixed accounting of quiescent nodes in veryNewAlphaBeta
+
+Tue Jul 16 03:54:24 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	board.c:  Optimised code generation calls (mainly just check for illegal board while
+	in loop)  Shouldn't make much of a difference.
+
+Wed Jul 17 06:16:04 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	alphabeta.c:  Substituted everything for a simple shell to veryNewAlphaBeta (which
+	is now moved to search.c) using the timedIterative framework.
+	basicsearch.c:  Fixed randomSearch, oneStep.  multistep and complete negamax still 
+	broken.
+	communication.c:  commented out isThereSomethingToRead as it is not used and the 
+	semRead function isn't available in cygwin.
+	configure.in:  Bump version to 0.4.0 for release
+
+Wed Jul 17 23:09:17 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	configure.in:  Don't output cmdline.cli, so that clig isn't needed at compile time,
+	now have to remember to change the version number in cmdline.cli
+	With the fix in accounting, the nodes per second count are relatively stable at about
+	250000 /sec
+			
+Sat Jul 20 00:11:19 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	search.h:  Increase MAX_DEPTH to 110.
+	search.c:  Check if hash depth is greater than 100, if so, it's a draw.
+
+Mon Jul 29 04:46:35 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	negascout.c:  New file.  Implemented negascout. 
+	unches.c, cmdline.cli:  Made negascout the default algorithm.
+	While testing it seemed to perform better than MTD(f) except that it seemed to prefer
+	to stalemate instead of checkmating, and it played illegal moves when it was about to
+	get mated
+	
+Tue Jul 30 00:49:56 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	negascout.c:  When updating alpha from hash values, initialise best move to the stored
+	move (it's a guess, but it sounds right).
+	search.c:  IterativeDeepening:  When in analyse mode and maximum depth is reached,
+	return with state->anomaly set to the new WAIT_FOR_EVENT.
+	ai.c:  Handle WAIT_FOR_EVENT properly (no, action, just block on the input queue)
+	search.c:  IterativeDeepening:  Check when returned value is a checkmate, and stop
+	iterating (should make for faster playing when withing checkmate zone).
+	
+Tue Jul 30 04:26:23 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	search.c:  quiescentSearch:  Modified hashtable replacement to only replace when theres
+	nothing there (which basically means don't replace, since it fills pretty quickly).
+	This is only temporary
+	negascout.c:  Hopefully fixed stalemate bug by checking for the existance of a legal
+	move (but there's still something wrong there, the evaluation of checkmate scores)
+	
+Tue Jul 30 06:02:52 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	search.c, negascout.c:  Modified so that hash retrieval of checkmates gets modified
+	depending on ply it gets retrieved.  It's working strangely though.
+	utils.c:  fixed bug in printBoard (maladapted to 0x88 board)
+	
+Tue Jul 30 20:02:25 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	hashstruct.h, negascout.c, search.c:  Increased size of hashing chunk to include
+	promoting piece.
+	search.c:  Added recoverPV to recover the PV line from the transposition table
+	search.c:  Check for out of time while in quiescentSearch.
+	bench.c:  Fixed freeing of the board when the epd line does not parse
+	utils.c:  Fixed bug in FEN and EPD parsing when en-passant square was set.
+	ai.c:  When receiving a setboard command, aside from printing the board, also write
+	the FEN.
+	negascout.c:  Fixed by keeping separate best and tempalpha (so that even if no score
+	breaks alpha, we still got a meaningful hash entry)
+	search.c:  recoverPV:  don't print from =0 and to = 0 entries produced during 
+	quiescent search when no move is better than sitting.
+	
+	 
+Wed Jul 31 04:18:56 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	negascout.c:  don't even look at a hash entry if it wasn't produced in the main tree
+	negascout.c:  store hash if the result is exact (makes wonders for PV recovery)
+	ai.c:  nailed that stupid lack of response bug (wasn't initialising lastcheck)
+
+Sat Aug 03 06:59:31 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	negascout.c:  And now nailed the "repeating a position is the same as checkmate"
+	problem.  Now, for testing.
+	
+Sat Aug 03 22:44:05 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	Moved site to sourceforge <http://smallpotato.sourceforge.net>
+	configure.in, cmdline.cli: Bump version to 0.5.0 for (suspended) release
+
+Mon Aug 05 22:36:48 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	Profiling now seems to indicate that evaluation is the top cpu user with about
+	20%.
+	
+Mon Aug 12 23:35:13 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	eval.c, unches.c, negascout.c, search.c:  Fix a couple of things that wouldn't
+	compile on gcc 2.x
+	
+Wed Aug 14 03:18:22 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	board.c, board.h:  Keep track of total values for white and black pieces on the
+	structure.  So, movePieceAndHash and unMove were modified, unMoveSimple is a 
+	copy of the previous unMove and is called in case movePiece was used (utils.c, board.c,
+	pieces.c).  Add setColorTotals to initialise.  Call from initialiseBoard and from the
+	FEN and EPD parsers.  Internalise piece values into the board structure.
+	unches.c:  Changed default to position piece evaluation (no relativeness).
+					
+Thu Aug 15 05:05:21 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	eval.c, unches.c:  Removed heuri and relativeHeuri since there is no longer any benefit 
+	on their continued existence.  Calling with -fixed will still behave in the same manner
+	by loading the default values into the value tables.
+	board.h, board.c:  Added piece count counters for each piece type.
+	eval.c:  Changed eval functions to use running totals and piececounts.  Also, slightly
+	improve the draw to insufficient material problem, and improve the non-relative version
+	for the corner endgame cases (eg 2R vs R)
+	(weird unreproduceable bug found during FICSing.  evaluation kept plummetting for
+	no real reason)
+	
+Thu Aug 15 22:55:50 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	board.c:  Reproduced the unreproduceable bug from yesterday (always use same random)
+	Small bug in unMove fixed, and problem is gone.
+	unches.c, ai.c, search.c, cmdline.cli:  Added resigning.
+
+Fri Aug 16 05:55:59 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	libale.[hc]:  Moved parseInteger from utils.c.  Added parseDouble.  Copied nextToken
+	tokeniser function from Amy 0.8.1 by Thorsten Greiner (thorsten.greiner@web.de).
+	unches.c:  Started to add configuration file support.
+	
+Sat Aug 17 00:50:02 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	unches.c:  Finished configuration file support.
+	sp.rc:  New file, demo configuration file
+	
+Sun Aug 18 01:45:35 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	configure.in, cmdline.cli:  Bump version to 0.5.1 for release
+			
+Mon Aug 19 05:09:51 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	board.[hc]: Add isInsufficientMaterialDraw
+	ai.c:  Check for claimable insufficient material draws and claim them.
+
+Sun Sep 08 22:19:34 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	doIO.c:  Changed input to accept special commands without the sp_ prefix if not in
+	xboard mode.  Also changed unchesmovetosan to sp_movetosan. Updated doc/commands.txt
+	to reflect the changes.
+	utils.c:  If move is obviously illegal, don't perform move, unMove.
+	utils.c:  Fixed stupid bug in FEN/EPD parsing.	
+
+
+Mon Sep 09 07:35:59 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	eval.c:  Split evaluations into phases.  For now there's only normal phase, and end-game
+	phase.  Add checkPhase function to check if we should switch phases.
+	search.c:  Check if we should switch phases in timedIterativeDeepening before starting
+	the search.
+	utils.c:  Set phase after parsing epd or fen.
+	procvalues.py, aleweights:  Switch to take opening and endgame tables.  Enforce 
+	symetrical (white/black) tables by only taking one.
+	
+Mon Sep 09 20:59:43 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	ai.c, doIO.c:  Added evaluate command.
+	
+Thu Sep 12 00:50:36 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	eval.c:  orderMoveList search crowning knight before rook
+	
+Thu Sep 12 21:20:13 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	basicsearch.c:  Fixed multinegamax and multistep to work with "new" utility functions
+	(generateMoveList mainly).  Cut down lines of code by 70% or so
+	
+Sat Sep 14 04:23:36 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	Tested on WAC (10 seconds, but 9 seconds really), 194/300, but many that were solved
+	were not recognized as such since sp doesn't understand multiple solutions.
+	Tweaked rook and pawn endgame evaluation
+	negascout.c::negaScoutDriver: Added simple aspiration search.
+	
+Sat Sep 14 17:37:52 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	utils.c,board.c,search.c:  Added handling of multiple epd moves to avoid/find.
+	Rerunning the WAC test, it now gets 205/300 (most differences should be due to 
+	multiple solution recognition and not due to the aspiration search imo)
+	Changed movePiece to movePieceSimple.  movePieceAndHash to movePiece
+
+Sun Sep 15 04:40:19 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	negascout.c, board.c:  Implemented null-move pruning (R=2 for now)
+	WAC solved jumped to 222/300	
+	Allowed recursive null-pruning.
+	Reduce window size of the aspiration to +-40
+	
+Sun Sep 15 19:54:52 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	aleweights:  Penalties to kings in the middle in the opening, up values for
+	king in b1,a1 and h1.  Reduce bonus for pawn on 7th.  Bonus for most pieces for
+	being in the centre during the endgame. 
+	search.c::calculateFinishTime:  Fix issue with 1-second reduction while doing epds.
+	And now 232/300 on WAC
+
+Mon Sep 16 17:00:58 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	aleweights, eval.[ch]:  Added mating phase evaluation.  Fixed small bug in evaluation
+	that ignored king values when in mating mode.
+	doIO.c:  if unknown command, say so.  Give some help if help is asked for.
+	Change version to 0.6.0 for release
+	
+Wed Sep 18 20:34:22 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	doIO.c:  More helpful initial message.
+	sp.rc:  Toned down default randomness from 3 to 2.
+	sp.rc, ai.c, doIO.c, search.c:  Add epdmindepth value, default to 6, minimum depth at
+	which an epd can be considered solved to try to avoid false positives, at the request
+	of Dann Corbit.
+	cmdline.cli: Also add epdmindepth to command line
+	sp.rc,negascout.c,eval.c,unches.c: Add another option to set the draw value.
+	
+Thu Sep 19 22:04:55 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	search.c, sp.rc, unches.c:  Made time management minimum percentage time configurable
+	through the configuration file (TimeAggression), and increased default to 35%
+	Added doc/help.txt to distribution.  It's just the output of 'smallpotato -help' for
+	the people who can't see that (i think win9x series, not sure).
+	
+Fri Sep 20 06:52:00 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	board.c::isInsufficientMaterialDraw:  Fix not recognising king vs king as draw
+	
+Sat Sep 21 00:36:31 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	unches.c::main add code from Dann Corbit not to use buffering on input and output
+	on windows system.
+	
+Sat Sep 21 19:48:23 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	common.h, all over the place: replace unsigned long long with U64 and typedef it
+	(trying to make it more portable).
+	board.h:  Start of massive increase in state.  Attack and moves structures added, now
+	to modify everything in the code...
+	board.c::setPieceLocations:  New function, assign a number to each piece.
+	board.c::setMoves: New function, set all available moves, attacks, and set attack board.
+	pieces.c::generate*Destinations:  New functions to set possible destinations for each
+	piece from each position.
+	
+Mon Sep 23 01:29:23 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	board.c::movePiece:  Modified to update new structures.
+	board.c::updateMoves:  New function, updates moves of specified pieces
+	pieces.c::generateMoves:  Modified to produce moves and captures separately, and
+	to update destination and attack bitboards (won't use generate*Destinations)
+	board.c::isLegal, inCheck:  Modified to take advantage of attack bitboards.
+	pieces.c::pieceCanMove:  Modified to take advantage of destination bitboard.
+	pieces.c::genearate*Captures, generate*Destinations removed.
+	pieces.[ch]::Made static and removed from pieces.h all pieces tables, and a couple of
+	functions
+	ai.c::handleActionWhileInSearch:  handle help request and unknown commands without
+	exiting search.
+	board.c::unMove:  Changed to update new structures.
+	utils.c::parseFen/EPD:  Call setPieceLocations and setMoves.
+	On early tests, it seems that perft is 8 times slower!  If this translates to nodes/sec
+	on game, i'll have to revert everything.
+	
+Thu Sep 26 15:59:12 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	board.c::checking:  New function.  Is to-move player checking?
+	search.c::quiescentSearch:  Switch back to generateTentativeQuiescentMoveList, check
+	if legal before recursing.
+	negascout.c::negascout:  Switch back to generateTentativeMoveList, check
+	if legal before recursing.  Dont null-move if in check.
+	That got it up to 180000 nps.  Maybe an acceptable performance hit, if i can use the
+	attack information elsewhere.  WAC goes back down to 218/300 in 10seconds (mindepth 6)
+	
+Sat Sep 28 00:18:40 EST 2002 Alejandro Dubrovsky <s328940@student.uq.edu.au>
+	pieces.c::?PawnGenerate:  don't add moves taking your own en-passant.  This fixes
+	the stuffups in perft count when using the "real" move generator (generateTentative
+	and cull if checking)
+	board.c::movePiece:  Fix lunacy in movePiece where if the piece moving was a pawn, 
+	many of the crowning behaviour was performed.
+	board.c,board.h,pieces.c:  Massive search & replace of piece for entity when referring
+	to a member of the entityboard.
+
+Wed Dec 25 03:18:38 AM EST 2002 ale <s328940@student.uq.edu.au>
+	pieces.c: bKingGenerate:  fix stupid bug that was checking for wether white had castling
+	rights.
+	pieces.c:  ?KingGenerate:  Rook squares should also be monitored by the king.
+	
+Thu Dec 26 01:45:22 AM EST 2002 ale <s328940@student.uq.edu.au>
+	board.c:  updateMoves:  Always recalculate kings, too tricky otherwise.
+	That seems to have fixed the move generator.  Down to 200 knps.
+	eval.c, search.c, negascout.c:  Limit history values (betaers) to 1 << 20.  Overvalue
+	piece exchanges so that it mostly weighs higher than history value for ordering.	
+	pieces.c:  pieceCanMove: Make it slightly more stringent by checking that source and
+	destination squares are of different colour, and that the source is a real piece.
+
+Thu Apr 24 03:24:43 PM EST 2003 ale <s328940@student.uq.edu.au>
+     Decided all this newfangled structures are too complex for what they are worth.  Roll 
+     back everything to around the 20th of September, 2002
+	Lots of playing with autoconf and automake.  Reading the manual for the first time.
+	Updating to automake 1.7 and autoconf 2.53
+
+Sun Apr 27 01:37:04 PM EST 2003 ale <s328940@student.uq.edu.au>
+	doIO.c: fix small memory leak in doInput (thanks to valgrind)	
+
+Tue Jul 22 05:26:16 AM EST 2003 ale <s328940@student.uq.edu.au>
+	search.c: timedIterativeDeepening:  calculate branching factor, and output on log.
+	eval.c:  create capture ordering tables, and make orderMoveList use them instead
+	of the table values when the move is a capture.
+	Go into end phase slightly earlier.
+	
+Tue Jul 22 06:12:08 PM EST 2003 ale <s328940@student.uq.edu.au>
+	aleweights:  turn down the value of the rook in the opening phase a tad (to try to 
+	avoid the bishop + knight vs rook + pawn swaps)
+	eval.c:  Rook vs minor piece is a draw
+
+Thu Sep 25 05:53:46 AM EST 2003 ale <s328940@student.uq.edu.au>
+	moveorder.h, moveorder.c:  new files.  moved orderMoveList from eval.[ch] to here
+	board.h:  Added Killer struct, and killer array to Board struct.
+	moveorder.c:  wrote updateKiller, getKiller, and clearKillers.
+	negascout.c:  update killers.  clear killers at depth + 1 on new move
+	mtdf.c, alphabetasearch.c:  deleted
+	search.c, search.h:  remove veryNewAlphaBeta.
+	unches.c, cmdline.cli:  get rid of all MTD(f) and Iterative alpha-beta engine options.
+	moveorder.c:  Use killer moves for move ordering
+	
+Thu Sep 25 09:33:02 PM EST 2003 ale <s328940@student.uq.edu.au>
+	moveorder.c:  Lower priority of killer moves
+	(not seeing an improvement from killer moves, but might as well keep them for now)
+	Bump version to 0.6.1 for release
+	
+Sun Sep 28 11:54:03 PM EST 2003 ale <s328940@student.uq.edu.au>
+	WACing at 257/300 at 10seconds now.	
+
+Tue Jul 20 06:26:46 AM EST 2004 Alejandro Dubrovsky <alito@organicrobot.com>
+	moveorder.c, negascout.c: Implement divide history table by two when max value reached 
+	idea by Tord Romstad.
+	
+Tue Jul 20 05:00:35 PM EST 2004 Alejandro Dubrovsky <alito@organicrobot.com>	
+	aleweights:  give more centering value to queen, rook.  Rook bonus for 6th rank too.
+	Don't penalise king so strongly for being on third rank.
+	eval.c:  Rough king safety implemented (just looks at the three pawns in front of the
+	king and their distances)
+	
+Tue Aug 10 09:41:32 PM EST 2004 Alejandro Dubrovsky <alito@organicrobot.com>
+    eval.c:  Add fianchetto bonus to try to avoid predilection for Kf1/8 when bishop in
+    fianchetto
+    
+	

@@ -1,0 +1,3 @@
+segfault 893 io.c
+don't reset analysis on time and otim
+

@@ -1,0 +1,134 @@
+##      @configure_input@
+##
+## Interface Description File for CLIG - command line interface generator
+## author: Harald Kirsch (kir@iitb.fhg.de)
+## Adapted for autoproject by Jim Van Zandt <jrv@vanzandt.mv.com>
+
+## The Name specified is only used in/for the manual page
+Name "Small Potato"
+
+## Usage specifies a one-liner which is printed as part of
+## usage-message. It is also used in the NAME-section of the manual
+## page as a short description.
+Usage {IETF protocol 2 compliant chess engine}
+
+## The Version specified is printed as part of the usage-message.
+## (The value comes from `configure.in', and is inserted by `configure')
+Version {0.6.1}
+
+## Commandline specifies the name of a slot in the generated struct
+## which will be set to a newly allocated string holding the
+## concatenated command line. This is particularly useful for programs
+## which want to record their calling sequence somewhere, e.g. in a in
+## output file to document how it was generated.
+Commandline tool
+
+Flag -help show_help {show usage information}
+Flag -V show_version {show program version}
+Flag -random random {play random moves}
+Flag -complete complete {play full negamax}
+Flag -onestep onestep {play with depth of one}
+Flag -multistep multistep {play with fixed depth alpha-beta cutoff algorithm}
+Flag -negascout negascout {play with iterative deepening negascout algorithm (default)}
+Flag -fixed fixedeval {evaluate board by fixed piece values}
+Flag -relative relativeeval {evaluate board by relative proportion to opponent}
+Flag -record record {record game}
+Flag -position positioneval {evaluate board by piece values relative to position}
+Flag -nobook nobook {do not use opening book}
+Flag -noresign noresign {never resign}
+Flag -norecord norecord {do not record the game}
+
+########################################################################
+## EXAMPLE OF FLAG OPTION
+
+## Flag options are rather trivial. They do not have any parameters.
+#Flag -v verbose {switch on verbose program operation}
+
+########################################################################
+## EXAMPLES OF STRING OPTIONS
+
+## String options can have one or more parameters. By default they
+## have exactly one parameter.
+#String -title title {title of x/y-plot}
+
+## To let them have exactly two parameters, use the following
+#String -xytitles xytitles {title of x- and y-axis} \
+#    {count = 2,2}
+
+## To impose no upper limit on the number of parameters, use oo,
+## i.e. double-`o'
+#String -plotnames plotnames {names of curves to plot} \
+#    {count = 1,oo}
+
+## An option you really need should be made mandatory. (I'm not sure
+## whether it can be called an `option' then?)
+#String -colors colors {colors to use in plots} \
+#    mandatory \
+#    {count = 1,5}
+
+## Non-mandatory options can have default values
+#String -bg background {background color} \
+#    {default = red}
+
+String -log logfile {file where to write all spurious output messages} {count = 1,1}
+String -gamefile gamefile {file where to record the games} {count = 1,1}
+String -values valuefile {file specifying pieces values} {count = 1,1}
+String -config configfile {configuration file - default is sp.rc, or sp.ini } {count = 1,1}
+String -compname computername {name to report for the engine } {count=1,1}
+String -book bookfile {opening book file} {count = 1,1}
+
+########################################################################
+## EXAMPLES OF FLOAT OPTIONS
+
+## The simplest Float-option has a default-count of 1, is not
+## mandatory, imposes no limit on the parameter and has no default
+#Float -o offset {offset to add to all curves to plot}
+
+## Float-option parameters can be forced to lie in a given range
+#Float -p p {probability}  {range = 0,1}
+    
+## `count', `mandatory' and `default' work as for String-options
+#Float -f f {frequencies} \
+#    {count = 2, 10} \
+#    {range = 0, 47.11 } \
+#    {default = 2 4 8 16.11}
+
+Float -guiveup resign {Pawn values deficit at which to resign (default is 6.5, will be ignored if combined with -relative) } \
+{count=1,1}
+
+## special values for range-specs are -oo and oo denoting minus
+## infinity and infinity
+#Float -negscale negscale {negative scale value}     {range = -oo, 0.0}
+
+#Float -scale scale {scale value}     {range = 0.0, oo}
+
+########################################################################
+## EXAMPLES OF INT OPTIONS
+
+## Int-options work like Float options.
+#Int -a a {flog quarx flirim poli gam i nabgala} \
+#    mandatory
+#
+#Int -b b {ram dibum gabalabarum deri pum pam} \
+#    {count = 3,4} \
+#    {range = -10, 10} \
+#    {default = -1 0 1}
+
+Int -d d {maximum depth of search} {count=1,1} {range=0,100}
+Int -r randomvariance {randomness introduced into the evaluation algorithm as a percentage of a pawn's value} \
+    {count = 1,1}
+Int -hs hashsize {number of entries in hash table (will be deprecated)} {count=1,1} {range=0,oo} 
+Int -hk hashkilobytes {hash table size in kilobytes} {count=1,1} {range=0,oo}
+Int -mindepth epdmindepth {minimum depth at which an epd can be considered solved} {count=1,1} {range=0,oo}
+Int -draw drawvalue {value, in hundredth of a pawn, of a draw} {count=1,1} {range=-oo,oo}
+Int -v verbose {verbosity level} {count=1,1} {range=0,oo}
+
+#######################################################################
+## EXAMPLES OF REST COMMAND
+
+## The Rest-command specifies what may be found on the command line
+## after all options have extracted their parameters. The Rest-command
+## has a default `count' of 1,oo, but here we set it to 1,10.
+#Rest infiles {list of input files} \
+#    {count = 1,10}
+

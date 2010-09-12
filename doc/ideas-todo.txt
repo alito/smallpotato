@@ -1,0 +1,9 @@
+endgame tablebases
+use hash move without generating moves
+try TD with values file
+evolve value files
+keep bitpieces of each piece type
+do quick check-generation based on above and destination bitpieces.
+switch to bitboards
+play with higher level control structures
+

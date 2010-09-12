@@ -1,0 +1,46 @@
+List of commands
+
+Small Potato accepts most commands that form part of the IETF protocol version 2.  
+For a list of those, you should probably read
+<http://www.tim-mann.org/xboard/engine-intf.html>
+
+It also accepts a number of extensions.  When in xboard mode, these need to be 
+prefixed with "SP_" to avoid clashes with future IETF protocol modifications 
+(eg SP_PERFT instead of PERFT) .  The "SP_" prefix is only required when in xboard mode,
+but is always accepted.  The commands are (case is not important):
+
+SANMOVE - utility command to be able to send the move in SAN format.
+
+BENCHMOVEUNMOVE <move> - time how long it takes to perform a move, and an 
+unmove  (move should be in e2e4 style of format, as used by USERMOVE)
+
+BENCHMOVEGEN <number> - time <number> of calls to the move generator.
+
+BENCHMOVECYCLE <depth> - time the cycle of moving, generating, unmoving cycle 
+to a depth of <depth> ply.
+
+BENCHEVAL <number> - perform <number> times of current evaluation function on 
+current board.
+
+PERFT <depth> - same as crafty's perft.
+
+EPDLINE <epdline> - time solving of <epdline> (using current time limits)
+For now, only the am and bm ops are recognised.
+
+EPDSUITE <epdsuite> - read each line in epdsuite and perform an SP_EPDLINE on 
+it.
+
+EPDMINDEPTH <mindepth> - minimum depth at which an epd can be considered solved.  Checkmates
+will return earlier.  To make an epd run till time runs out, just set this to a 
+sufficiently high number (eg 50)
+
+MODIFYBOOK <bookfile> - open book file for writing, creating if necessary.  
+This switches Small Potato to book editing mode and will remain in that state 
+until it exits or the CLOSEBOOK command is sent.  This mode is similar to 
+FORCEd mode except that any move sent through USERMOVE will be added to the book.
+
+CLOSEBOOK - stop editing book
+
+EVALUATE - print static evaluation of current board
+
+HELP - nothing tricky there

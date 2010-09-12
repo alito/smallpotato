@@ -1,0 +1,5 @@
+gcc -O2 -Wall -c libale.c && ar -vr libale.a libale.o xmalloc.o && cp libale.a /usr/local/lib && cp libale.h /usr/local/include
+gcc -ggdb -O -c libale.c && gcc -ggdb -O -c xmalloc.c && ar -vr libaleg.a libale.o xmalloc.o
+gcc -O2 -Wall -c testale.c && gcc -o testale testale.o libale.a
+gcc -O -g -c testale.c && gcc -o testaleg testale.o libaleg.a
+
