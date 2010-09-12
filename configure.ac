@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.57)
-AC_INIT([Small Potato], [0.6.1], [s328940@student.uq.edu.au])
+AC_INIT([Small Potato], [0.6.1], [alito@organicrobot.com])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([unches.c])
 AC_CONFIG_HEADER([config.h])

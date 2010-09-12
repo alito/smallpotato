@@ -1,0 +1,11 @@
+syntax: glob
+
+*~
+*.pyc
+*.o
+*.bz2
+*.gz
+*.zip
+*.pgn
+*.a
+.deps
