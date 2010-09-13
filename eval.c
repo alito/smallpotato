@@ -193,7 +193,11 @@ int initialisePieceValues(char *finname)
 		for (k = 0; k < MATING_PHASE; k++) {		
 			for (i = WKING; i < NOTHING; i++) {
 				for (j = 0; j < 128; j++) {
-					fscanf(fin, "%d", &originalValues[k][i][j]);
+					if (fscanf(fin, "%d", &originalValues[k][i][j]) != 1) {
+						fprintf(stderr, "Error reading piece values\n");
+						fclose(fin);
+						return -1;
+					}
 				}
 			}
 		}

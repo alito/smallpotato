@@ -69,7 +69,7 @@ static int knightGenerate(Board *b, int from, Move *movelist, int index) {
 	newmoves = pieceMoves[WKNIGHT][from];
 	temp.from = from;
 	temp.piece = NOTHING;
-	for (i = newmoves; *i >= 0; i++) {
+	for (i = newmoves; *i >= 0; ++i) {
 		if (b->colors[*i] != ourcolor) {
 			temp.to = *i;
 			movelist[index++] = temp;
@@ -91,7 +91,7 @@ static int knightGenerateCaptures(Board *b, int from, Move *movelist, int index)
 	newmoves = pieceMoves[WKNIGHT][from];
 	temp.from = from;
 	temp.piece = NOTHING;
-	for (i = newmoves; *i >= 0; i++) {
+	for (i = newmoves; *i >= 0; ++i) {
 		if (b->colors[*i] == theircolor) {
 			temp.to = *i;
 			movelist[index++] = temp;
@@ -103,7 +103,7 @@ static int knightGenerateCaptures(Board *b, int from, Move *movelist, int index)
 
 /* pretty much copied from Bruce Moreland's 0x88 explanation */
 static int rookGenerate(Board *b, int from, Move *movelist, int index) {
-	int current;
+	int current, numberdiff;
 	int *eachdiff;
 	int diffs[] = {1,-1,16,-16,0};
 	Move temp;
@@ -112,26 +112,27 @@ static int rookGenerate(Board *b, int from, Move *movelist, int index) {
 	ourcolor = b->colors[from];
 	temp.from = from;
 	temp.piece = NOTHING;
-	for (eachdiff = diffs; *eachdiff; eachdiff++) {
-		for (current = from + *eachdiff; !(current & OUT); current += *eachdiff) {
+	for (eachdiff = diffs; numberdiff = *eachdiff; ++eachdiff) {
+		for (current = from + numberdiff; !(current & OUT); current += numberdiff) {
 			if (b->colors[current] == NOTHING) {
 				temp.to = current;
 				movelist[index++] = temp;
 			} else if (b->colors[current] == ourcolor) {
-				current = E5 + 8;
+				goto rookout;
 			} else {
 				temp.to = current;
 				movelist[index++] = temp;
-				current = E5 + 8; /* somewhere where it will get out of the loop */
+				goto rookout;
 			}					
 		}
 		
 	}
+	rookout:
 	return index;
 }
 
 static int rookGenerateCaptures(Board *b, int from, Move *movelist, int index) {
-	int current;
+	int current, numberdiff;
 	int *eachdiff;
 	int diffs[] = {1,-1,16,-16,0};
 	Move temp;
@@ -140,19 +141,20 @@ static int rookGenerateCaptures(Board *b, int from, Move *movelist, int index) {
 	ourcolor = b->colors[from];
 	temp.from = from;
 	temp.piece = NOTHING;
-	for (eachdiff = diffs; *eachdiff; eachdiff++) {
-		for (current = from + *eachdiff; !(current & OUT); current += *eachdiff) {
+	for (eachdiff = diffs; numberdiff=*eachdiff; ++eachdiff) {
+		for (current = from + numberdiff; !(current & OUT); current += numberdiff) {
 			if (b->colors[current] != NOTHING) {
 				if (b->colors[current] == ourcolor) {
-					current = E5 + 8;
+					goto rookcaptureout;
 				} else {
 					temp.to = current;
 					movelist[index++] = temp;
-					current = E5 + 8; /* somewhere where it will get out of the loop */
+					goto rookcaptureout;
 				}
 			}
 		}		
 	}
+	rookcaptureout:
 	return index;
 }
 
@@ -160,7 +162,7 @@ static int rookGenerateCaptures(Board *b, int from, Move *movelist, int index) {
 
 /* pretty much copied from Bruce Moreland's 0x88 explanation */
 static int bishopGenerate(Board *b, int from, Move *movelist, int index) {
-	int current;
+	int current, numberdiff;
 	int *eachdiff;
 	int diffs[] = {17,-17,15,-15,0};
 	Move temp;
@@ -169,27 +171,28 @@ static int bishopGenerate(Board *b, int from, Move *movelist, int index) {
 	ourcolor = b->colors[from];
 	temp.from = from;
 	temp.piece = NOTHING;
-	for (eachdiff = diffs; *eachdiff; eachdiff++) {
-		for (current = from + *eachdiff; !(current & OUT); current += *eachdiff) {
+	for (eachdiff = diffs; numberdiff=*eachdiff; ++eachdiff) {
+		for (current = from + numberdiff; !(current & OUT); current += numberdiff) {
 			if (b->colors[current] == NOTHING) {
 				temp.to = current;
 				movelist[index++] = temp;
 			} else if (b->colors[current] == ourcolor) {
-				current = E5 + 8;
+				goto bishopout;
 			} else {
 				temp.to = current;
 				movelist[index++] = temp;
-				current = E5 + 8; /* somewhere where it will get out of the loop */
+				goto bishopout;
 			}					
 		}
-		
 	}
+	bishopout:
+
 	return index;
 }
 
 /* pretty much copied from Bruce Moreland's 0x88 explanation */
 static int bishopGenerateCaptures(Board *b, int from, Move *movelist, int index) {
-	int current;
+	int current, numberdiff;
 	int *eachdiff;
 	int diffs[] = {17,-17,15,-15,0};
 	Move temp;
@@ -198,20 +201,20 @@ static int bishopGenerateCaptures(Board *b, int from, Move *movelist, int index)
 	ourcolor = b->colors[from];
 	temp.from = from;
 	temp.piece = NOTHING;
-	for (eachdiff = diffs; *eachdiff; eachdiff++) {
-		for (current = from + *eachdiff; !(current & OUT); current += *eachdiff) {
+	for (eachdiff = diffs; numberdiff=*eachdiff; ++eachdiff) {
+		for (current = from + numberdiff; !(current & OUT); current += numberdiff) {
 			if (b->colors[current] != NOTHING) {
 				if (b->colors[current] == ourcolor) {
-					current = E5 + 8;
+					goto bishopcaptureout;
 				} else {
 					temp.to = current;
 					movelist[index++] = temp;
-					current = E5 + 8; /* somewhere where it will get out of the loop */
+					goto bishopcaptureout;
 				}
 			}
 		}
-		
 	}
+	bishopcaptureout:
 	return index;
 }
 
@@ -496,7 +499,7 @@ static int wkingGenerate(Board *b, int from, Move *movelist, int index) {
 	newmoves = pieceMoves[WKING][from];
 	temp.from = from;
 	temp.piece = NOTHING;
-	for (i = newmoves; *i >= 0; i++) {
+	for (i = newmoves; *i >= 0; ++i) {
 		if (b->colors[*i] != WHITEP) {
 			temp.to = *i;
 			movelist[index++] = temp;
@@ -542,7 +545,7 @@ static int bkingGenerate(Board *b, int from, Move *movelist, int index) {
 	newmoves = pieceMoves[BKING][from];
 	temp.from = from;
 	temp.piece = NOTHING;
-	for (i = newmoves; *i >= 0; i++) {
+	for (i = newmoves; *i >= 0; ++i) {
 		if (b->colors[*i] != BLACKP) {
 			temp.to = *i;
 			movelist[index++] = temp;
@@ -588,7 +591,7 @@ static int wkingGenerateCaptures(Board *b, int from, Move *movelist, int index) 
 	newmoves = pieceMoves[WKING][from];
 	temp.from = from;
 	temp.piece = NOTHING;
-	for (i = newmoves; *i >= 0; i++) {
+	for (i = newmoves; *i >= 0; ++i) {
 		if (b->colors[*i] == BLACKP) {
 			temp.to = *i;
 			movelist[index++] = temp;
@@ -604,7 +607,7 @@ static int bkingGenerateCaptures(Board *b, int from, Move *movelist, int index) 
 	newmoves = pieceMoves[BKING][from];
 	temp.from = from;
 	temp.piece = NOTHING;
-	for (i = newmoves; *i >= 0; i++) {
+	for (i = newmoves; *i >= 0; ++i) {
 		if (b->colors[*i] == WHITEP) {
 			temp.to = *i;
 			movelist[index++] = temp;

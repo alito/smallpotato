@@ -1,9 +1,9 @@
 import os, sys
 
-fout = open('/usr/src/chess/smallpotato/doc/help.txt','w')
-print >> fout, """
+
+print """
 The following is the output of running smallpotato -help on systems that
 handle stderr correctly:
 """ 
-fout.writelines(os.popen3('/usr/src/chess/smallpotato/smallpotato -help','r')[2].readlines())
-fout.close()
+sys.stdout.writelines(os.popen3('smallpotato -help','r')[2].readlines())
+

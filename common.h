@@ -22,6 +22,7 @@
 
 #include "config.h"
 #include <stdio.h>
+#include <stdint.h>
 #include "system.h"
 
 #undef TRUE
@@ -30,6 +31,6 @@
 #define FALSE 0
 #define TRUE 1
 
-typedef unsigned long long U64;
+typedef uint64_t U64;
 
 #endif

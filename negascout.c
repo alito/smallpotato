@@ -35,11 +35,10 @@ by Aske Plaat, and then fixed from his PhD Thesis */
  
 int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *flags )
 {                        
-	pieceType color;
 	U64 key, position;
 	hashChunk *hashchunk;
 	hashTable *hashtable;
-	int best = MINVALUE - 1, current = 0, usesuggested = 0, emptyqueue,
+	int best = MINVALUE - 1, current = 0, emptyqueue,
 		lowok, hiok, tempalpha, bestwhen = 0, numbermoves = 0, moveindex = 0, 
 		gottime = 1, noderesult, tempbeta, allillegal = 1, tempcurrent, lastnull,
 		canttouchme;
@@ -59,10 +58,8 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 
 
 	if (b->blackturn) {
-		color = BLACKP;
 		hashchunk = &hashtable->black[position];
 	} else {
-		color = WHITEP;
 		hashchunk = &hashtable->white[position];
 	}
 
@@ -167,7 +164,6 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 					}
 	
 				}
-				usesuggested = 1;
 				sugmove.from = hashchunk->from;
 				sugmove.to = hashchunk->to;
 				sugmove.piece = hashchunk->piece;				

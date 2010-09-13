@@ -487,12 +487,9 @@ movePiece(Board * const board, const Move * const move)
 						board->piecevalues[BROOK][H8];
 						thismove->flags |= BKCASTLE;	
 						key ^=
-							board->hashtable->piecekeys[BROOK -
-																		wking][H8] ^
-							board->hashtable->piecekeys[BROOK -
-																		wking][F8] ^
-							board->hashtable->piecekeys[NOTHING -
-																		wking][F8] ^
+							board->hashtable->piecekeys[BROOK - wking][H8] ^
+							board->hashtable->piecekeys[BROOK - wking][F8] ^
+							board->hashtable->piecekeys[NOTHING - wking][F8] ^
 							board->hashtable->piecekeys[NOTHING - wking][H8];
 					} else {
 						if (move->to == C8) {
@@ -504,12 +501,9 @@ movePiece(Board * const board, const Move * const move)
 							board->piecevalues[BROOK][A8];							
 							thismove->flags |= BQCASTLE;
 							key ^=
-								board->hashtable->piecekeys[BROOK -
-																			wking][D8] ^
-								board->hashtable->piecekeys[BROOK -
-																			wking][A8] ^
-								board->hashtable->piecekeys[NOTHING -
-																			wking][D8] ^
+								board->hashtable->piecekeys[BROOK - wking][D8] ^
+								board->hashtable->piecekeys[BROOK - wking][A8] ^
+								board->hashtable->piecekeys[NOTHING - wking][D8] ^
 								board->hashtable->piecekeys[NOTHING - wking][A8];
 
 						}
@@ -874,13 +868,12 @@ int inCheck(const Board * const board)
 	int kingpos, i, result, j, incheck, oppkingpos, total, current,
 		blocked, diffkings, currrow, currcol;
 	int *moves;
-	pieceType attack, currpiece;
+	pieceType currpiece;
 
 	result = incheck = blocked = 0;
 	if (board->blackturn) {
 		kingpos = board->bkingpos;
 		oppkingpos = board->wkingpos;
-		attack = WHITEP;
 		currrow = x88PosToRow(kingpos);
 		currcol = x88PosToCol(kingpos);
 
@@ -1098,7 +1091,6 @@ int inCheck(const Board * const board)
 	} else {
 		kingpos = board->wkingpos;
 		oppkingpos = board->bkingpos;
-		attack = BLACKP;
 		currrow = x88PosToRow(kingpos);
 		currcol = x88PosToCol(kingpos);
 
