@@ -1532,7 +1532,7 @@ movelist, return number of moves. Return -1 if taking oppositions
 king is an option (illegal position)
 For now, quiescent moves are all moves that take a piece */
 int generateTentativeQuiescentMoveList(const Board * const b, Move *movelist) {
-	int movecount = 0, from = 0, newmovecount = 0, ok = 1, oppking;
+	int movecount = 0, from = 0, newmovecount = 0, oppking;
 	pieceType color;
 	
 	if (b->blackturn) {
@@ -1543,18 +1543,19 @@ int generateTentativeQuiescentMoveList(const Board * const b, Move *movelist) {
 		oppking = b->bkingpos;		
 	}
 	
-	for (; (from < I8) && (b->colors[from] != color); from++);
-	while ((from < I8) && (ok)) {
+	for (; (from < I8) && (b->colors[from] != color); ++from);
+	while (from < I8) {
 		newmovecount = generateCaptures[b->squares[from]](b,from,movelist,movecount);
 		/* check if attacking opposite king */
-		for (; (movecount < newmovecount) && (ok); movecount++) {
-			ok = (movelist[movecount].to != oppking);
+		while (movecount < newmovecount) {
+			if  (movelist[movecount++].to == oppking)
+			{
+				movecount = -1;
+				goto outOfLoop;
+			}
 		}
-		for (from++; (b->colors[from] != color) && (from < I8); from++);		
+		for (++from; (b->colors[from] != color) && (from < I8); ++from);
 	}
-	
-	if (!ok) {
-		movecount = -1;
-	}
+	outOfLoop:
 	return movecount;
 }

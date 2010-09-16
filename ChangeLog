@@ -907,4 +907,10 @@ Tue Aug 10 09:41:32 PM EST 2004 Alejandro Dubrovsky <alito@organicrobot.com>
     
 Tue 2010/09/13 Alejandro Dubrovsky <alito@organicrobot.com>
     board.h, moveorder.h:  Move a couple of functions to the includes to help get them inlined.
-	
+
+Tue 2010/09/14 Alejandro Dubrovsky <alito@organicrobot.com>
+    WACing at 272/300 at 10 seconds on a Core 2 Duo E4300
+
+Tue 2010/09/14 Alejandro Dubrovsky <alito@organicrobot.com>
+    pieces.c: Make the generate functions take a const Board pointer.
+	eval.c: Get rid of king safety.

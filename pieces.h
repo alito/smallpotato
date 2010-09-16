@@ -40,7 +40,8 @@ int pieceMoves[NOTHING + 1][128][28];
 
 typedef int (*generateMoveFunction) (Board *, int, Move *, int); /* from, movelist, index */
 generateMoveFunction generateMoves[NOTHING + 1];
-generateMoveFunction generateCaptures[NOTHING + 1];
+typedef int (*generateMoveFunctionConstant) (const Board *, int, Move *, int); /* from, movelist, index */
+generateMoveFunctionConstant generateCaptures[NOTHING + 1];
 
 void initialiseMoveLists();
 void initialisePieceCanMoveFunctions();

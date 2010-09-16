@@ -1,3 +1,3 @@
-CFLAGS="-O2 -pg -g -Wall -march=core2 -mtune=core2 -pipe" configure
+CFLAGS="-O2 -pg -ggdb -Wall -march=core2 -mtune=core2 -pipe" configure
 make clean && make && mv smallpotato psmallpotato
 

@@ -78,7 +78,7 @@ static int knightGenerate(Board *b, int from, Move *movelist, int index) {
 	return index;
 }
 
-static int knightGenerateCaptures(Board *b, int from, Move *movelist, int index) {
+static int knightGenerateCaptures(const Board *b, int from, Move *movelist, int index) {
 	int *newmoves, *i;
 	Move temp;
 	pieceType theircolor;
@@ -112,26 +112,25 @@ static int rookGenerate(Board *b, int from, Move *movelist, int index) {
 	ourcolor = b->colors[from];
 	temp.from = from;
 	temp.piece = NOTHING;
-	for (eachdiff = diffs; numberdiff = *eachdiff; ++eachdiff) {
+	for (eachdiff = diffs; (numberdiff = *eachdiff); ++eachdiff) {
 		for (current = from + numberdiff; !(current & OUT); current += numberdiff) {
 			if (b->colors[current] == NOTHING) {
 				temp.to = current;
 				movelist[index++] = temp;
 			} else if (b->colors[current] == ourcolor) {
-				goto rookout;
+				break;
 			} else {
 				temp.to = current;
 				movelist[index++] = temp;
-				goto rookout;
+				break;
 			}					
 		}
-		
 	}
-	rookout:
+
 	return index;
 }
 
-static int rookGenerateCaptures(Board *b, int from, Move *movelist, int index) {
+static int rookGenerateCaptures(const Board *b, int from, Move *movelist, int index) {
 	int current, numberdiff;
 	int *eachdiff;
 	int diffs[] = {1,-1,16,-16,0};
@@ -141,20 +140,20 @@ static int rookGenerateCaptures(Board *b, int from, Move *movelist, int index) {
 	ourcolor = b->colors[from];
 	temp.from = from;
 	temp.piece = NOTHING;
-	for (eachdiff = diffs; numberdiff=*eachdiff; ++eachdiff) {
+	for (eachdiff = diffs; (numberdiff=*eachdiff); ++eachdiff) {
 		for (current = from + numberdiff; !(current & OUT); current += numberdiff) {
 			if (b->colors[current] != NOTHING) {
 				if (b->colors[current] == ourcolor) {
-					goto rookcaptureout;
+					break;
 				} else {
 					temp.to = current;
 					movelist[index++] = temp;
-					goto rookcaptureout;
+					break;
 				}
 			}
-		}		
+		}
 	}
-	rookcaptureout:
+
 	return index;
 }
 
@@ -171,27 +170,26 @@ static int bishopGenerate(Board *b, int from, Move *movelist, int index) {
 	ourcolor = b->colors[from];
 	temp.from = from;
 	temp.piece = NOTHING;
-	for (eachdiff = diffs; numberdiff=*eachdiff; ++eachdiff) {
+	for (eachdiff = diffs; (numberdiff=*eachdiff); ++eachdiff) {
 		for (current = from + numberdiff; !(current & OUT); current += numberdiff) {
 			if (b->colors[current] == NOTHING) {
 				temp.to = current;
 				movelist[index++] = temp;
 			} else if (b->colors[current] == ourcolor) {
-				goto bishopout;
+				break;
 			} else {
 				temp.to = current;
 				movelist[index++] = temp;
-				goto bishopout;
+				break;
 			}					
 		}
 	}
-	bishopout:
 
 	return index;
 }
 
 /* pretty much copied from Bruce Moreland's 0x88 explanation */
-static int bishopGenerateCaptures(Board *b, int from, Move *movelist, int index) {
+static int bishopGenerateCaptures(const Board *b, int from, Move *movelist, int index) {
 	int current, numberdiff;
 	int *eachdiff;
 	int diffs[] = {17,-17,15,-15,0};
@@ -201,20 +199,19 @@ static int bishopGenerateCaptures(Board *b, int from, Move *movelist, int index)
 	ourcolor = b->colors[from];
 	temp.from = from;
 	temp.piece = NOTHING;
-	for (eachdiff = diffs; numberdiff=*eachdiff; ++eachdiff) {
+	for (eachdiff = diffs; (numberdiff=*eachdiff); ++eachdiff) {
 		for (current = from + numberdiff; !(current & OUT); current += numberdiff) {
 			if (b->colors[current] != NOTHING) {
 				if (b->colors[current] == ourcolor) {
-					goto bishopcaptureout;
+					break;
 				} else {
 					temp.to = current;
 					movelist[index++] = temp;
-					goto bishopcaptureout;
+					break;
 				}
 			}
 		}
 	}
-	bishopcaptureout:
 	return index;
 }
 
@@ -227,7 +224,7 @@ static int queenGenerate(Board *b, int from, Move *movelist, int index) {
 	return newindex;
 }
 
-static int queenGenerateCaptures(Board *b, int from, Move *movelist, int index) {
+static int queenGenerateCaptures(const Board *b, int from, Move *movelist, int index) {
 	int newindex;
 	newindex = bishopGenerateCaptures(b,from,movelist,index);
 	newindex = rookGenerateCaptures(b,from,movelist,newindex);
@@ -370,7 +367,7 @@ static int bpawnGenerate(Board *b, int from, Move *movelist, int index) {
 	return index;
 }
 
-static int wpawnGenerateCaptures(Board *b, int from, Move *movelist, int index) {
+static int wpawnGenerateCaptures(const Board *b, int from, Move *movelist, int index) {
 	int col;
 	Move temp;
 	temp.from = from;
@@ -431,7 +428,7 @@ static int wpawnGenerateCaptures(Board *b, int from, Move *movelist, int index) 
 	return index;
 }
 
-static int bpawnGenerateCaptures(Board *b, int from, Move *movelist, int index) {
+static int bpawnGenerateCaptures(const Board *b, int from, Move *movelist, int index) {
 	int col;
 	Move temp;
 	temp.from = from;
@@ -584,7 +581,7 @@ static int bkingGenerate(Board *b, int from, Move *movelist, int index) {
 	return index;	
 }
 
-static int wkingGenerateCaptures(Board *b, int from, Move *movelist, int index) {
+static int wkingGenerateCaptures(const Board *b, int from, Move *movelist, int index) {
 	int *newmoves, *i;
 	Move temp;
 		
@@ -600,7 +597,7 @@ static int wkingGenerateCaptures(Board *b, int from, Move *movelist, int index) 
 	return index;	
 }
 
-static int bkingGenerateCaptures(Board *b, int from, Move *movelist, int index) {
+static int bkingGenerateCaptures(const Board *b, int from, Move *movelist, int index) {
 	int *newmoves, *i;
 	Move temp;
 		
@@ -621,7 +618,7 @@ static int nothingGenerate(Board *board, int from, Move *movelist, int index) {
 	return index;
 }
 
-static int nothingGenerateCaptures(Board *board, int from, Move *movelist, int index) {
+static int nothingGenerateCaptures(const Board *board, int from, Move *movelist, int index) {
 	return index;
 }
 

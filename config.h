@@ -141,7 +141,7 @@
 #define PACKAGE_NAME "Small Potato"
 
 /* Define to the full name and version of this package. */
-#define PACKAGE_STRING "Small Potato 0.6.1"
+#define PACKAGE_STRING "Small Potato 0.6.2"
 
 /* Define to the one symbol short name of this package. */
 #define PACKAGE_TARNAME "small-potato"
@@ -150,7 +150,7 @@
 #define PACKAGE_URL ""
 
 /* Define to the version of this package. */
-#define PACKAGE_VERSION "0.6.1"
+#define PACKAGE_VERSION "0.6.2"
 
 /* If using the C implementation of alloca, define if you know the
    direction of stack growth for your system; otherwise it will be
@@ -173,7 +173,7 @@
 /* #undef TM_IN_SYS_TIME */
 
 /* Version number of package */
-#define VERSION "0.6.1"
+#define VERSION "0.6.2"
 
 /* Define to empty if `const' does not conform to ANSI C. */
 /* #undef const */

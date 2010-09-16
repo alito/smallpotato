@@ -346,7 +346,8 @@ int positionheuri(Board * board)
 			value = board->whitetotal - board->blacktotal;			
 		} 
 	} else {
-		value = board->whitetotal - board->blacktotal + kingSafetyDiff(board);
+		value = board->whitetotal - board->blacktotal;
+		//+ kingSafetyDiff(board);
 	}
 
 	return value;
