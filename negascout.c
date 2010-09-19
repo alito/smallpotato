@@ -257,8 +257,12 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 			movePiece(b, &tempmove);
 			if (b->fifty[b->ply] >= 100) {
 				/* FIXME: what if there's checkmate and 100 ply at the same time? */
-				current = b->drawvalue;
-				allillegal = 0;
+				/* do a quick check to see if the move we just did put us in check */
+				current = -quiescentSearch(b, -tempbeta, -tempalpha, flags, 1);
+				if (current != -ILLEGAL_POSITION) {
+					current = b->drawvalue;
+					allillegal = 0;
+				}
 			} else {
 				if (checkRepetitionDraw(b)) {
 					current = b->drawvalue;

@@ -1,4 +1,4 @@
-tools_DIST = procvalues.py makebookfrompgn.py
+tools_DIST = processpiecevalues.py makebookfrompgn.py
 
 toolsdir = $(pkgdatadir)/tools
 

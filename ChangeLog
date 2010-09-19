@@ -925,4 +925,6 @@ Tue 2010/09/17 Alejandro Dubrovsky <alito@organicrobot.com>
     board.c (generateTentativeQuiescentMoveList): More hypothetical microoptimisations.
     doIO.c: Linebuffer the debug file.
     tools/procvalues.py: Wrap it nicely in optparse.
+    negascout.c: Fix case where we do an illegal move on the 100th ply draw case.
+    
 	
