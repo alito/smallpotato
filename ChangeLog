@@ -923,5 +923,6 @@ Tue 2010/09/17 Alejandro Dubrovsky <alito@organicrobot.com>
     search.c, negascout.c:  When the last move wasn't a capture, don't do a full quiescent check. 
     Only check for legality, and evaluation.
     board.c (generateTentativeQuiescentMoveList): More hypothetical microoptimisations.
-    
+    doIO.c: Linebuffer the debug file.
+    tools/procvalues.py: Wrap it nicely in optparse.
 	

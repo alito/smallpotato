@@ -35,6 +35,7 @@ void *doInput(void *details)
 #ifdef DEBUG	
 	FILE *debugFile;
 	debugFile = fopen("iolog.log","w");
+	setlinebuf(debugFile);
 #endif
 	newline = NULL;
 	retval = (int) NULL;
