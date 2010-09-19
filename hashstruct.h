@@ -25,11 +25,11 @@
 struct hashChunkStruct
 {
 	U64 key;
-	char depth;
-	unsigned char flags, from, to;
-	pieceType piece;	
 	int lbound, ubound;
 	short int ply;
+	char piece, depth;
+	unsigned char flags, from, to;
+
 };
 
 typedef struct hashChunkStruct hashChunk;

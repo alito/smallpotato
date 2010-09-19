@@ -38,10 +38,7 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 	U64 key, position;
 	hashChunk *hashchunk;
 	hashTable *hashtable;
-	int best = MINVALUE - 1, current = 0, emptyqueue,
-		lowok, hiok, tempalpha, bestwhen = 0, numbermoves = 0, moveindex = 0, 
-		gottime = 1, noderesult, tempbeta, allillegal = 1, tempcurrent, lastnull,
-		canttouchme;
+	int best = MINVALUE - 1, current = 0,  tempalpha, bestwhen = 0, numbermoves = 0, moveindex = 0, gottime = 1, tempbeta, allillegal = 1;
 	int moveorder[MAXMOVESPERNODE]; 
 	Move tempmove, sugmove, bestmove, submove;
 	Move movelist[MAXMOVESPERNODE];
@@ -72,19 +69,20 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 	} else {
 		if (hashchunk->depth > 0) {
 			if (hashchunk->key == key) {
+				int hiok, lowok;
 				b->totalhash++;
 				if (hashchunk->depth >= 100) {
 					/*  100 moves and can still get the same hash.  That's a draw */
 					return 0;
 				}
-				lowok = hiok = 0;
-				if ((hashchunk->flags == HASH_LOWBOUND)
-					 || (hashchunk->flags == HASH_ACCURATE)) {
+				if (hashchunk->flags == HASH_ACCURATE) {
+					hiok = lowok = 1;
+				} else if (hashchunk->flags == HASH_LOWBOUND) {
 					lowok = 1;
-				}
-				if ((hashchunk->flags == HASH_UPBOUND)
-					 || (hashchunk->flags == HASH_ACCURATE)) {
+					hiok = 0;
+				} else if (hashchunk->flags == HASH_UPBOUND) {
 					hiok = 1;
+					lowok = 0;
 				}
 				if (hashchunk->depth >= depth) {
 					if ((hiok) && (lowok)) {
@@ -95,7 +93,7 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 						}
 						move->from = hashchunk->from;
 						move->to = hashchunk->to;
-						move->piece = hashchunk->piece;
+						move->piece = (pieceType) hashchunk->piece;
 						if (hashchunk->lbound >= MAXVALUE - MAXPLYPERGAME) {
 							return hashchunk->lbound + hashchunk->ply - b->ply;
 						}
@@ -112,7 +110,7 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 						}
 						move->from = hashchunk->from;
 						move->to = hashchunk->to;
-						move->piece = hashchunk->piece;						
+						move->piece = (pieceType) hashchunk->piece;
 						if (hashchunk->lbound >= MAXVALUE - MAXPLYPERGAME) {
 							return hashchunk->lbound + hashchunk->ply - b->ply;
 						}						
@@ -126,7 +124,7 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 						}
 						move->from = hashchunk->from;
 						move->to = hashchunk->to;
-						move->piece = hashchunk->piece;						
+						move->piece = (pieceType) hashchunk->piece;
 						if (hashchunk->ubound <= MINVALUE + MAXPLYPERGAME) {
 							return hashchunk->ubound - hashchunk->ply + b->ply;
 						}						
@@ -147,7 +145,7 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 						/* should update the best move, maybe */
 						bestmove.from = hashchunk->from;
 						bestmove.to = hashchunk->to;
-						bestmove.piece = hashchunk->piece;
+						bestmove.piece = (pieceType) hashchunk->piece;
 						best = alpha;
 					}
 					if ((hiok) && (hashchunk->ubound < beta)) {
@@ -166,7 +164,7 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 				}
 				sugmove.from = hashchunk->from;
 				sugmove.to = hashchunk->to;
-				sugmove.piece = hashchunk->piece;				
+				sugmove.piece = (pieceType) hashchunk->piece;
 				if (b->verbosity > 15) {
 					fprintf(logfile,
 							  "hashed suggested move level %d\t value %d\thash key %llu\n",
@@ -201,19 +199,21 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 			there are major pieces left (to avoid zugzwang-laden positions),
 			we are not searching a PV-node,
 			and we are not in mating phase */			
-			lastnull = b->nulldepth;
+			int lastnull = b->nulldepth;
 			if (((lastnull == 0) || (lastnull > depth + DEPTH_REDUCTION + 1)) && 
 			(b->piececount[BROOK] + b->piececount[BQUEEN]  +
 			 b->piececount[WROOK] + b->piececount[WQUEEN] > 0) &&
 			(tempbeta - tempalpha == 1) &&
 			(b->phase < MATING_PHASE)) {
+				int canttouchme;
 				makeNullMove(b);
 				b->nulldepth = depth;
 				if (depth > DEPTH_REDUCTION + 1) {
 					canttouchme = -negaScout(b, &submove, depth - DEPTH_REDUCTION - 1, 
 					-tempbeta, -tempalpha, flags);			
 				} else {
-					canttouchme = -quiescentSearch(b, -tempbeta, -tempalpha, flags);
+					/* this was a quiet move. Evaluate only */
+					canttouchme = -quiescentSearch(b, -tempbeta, -tempalpha, flags, 1);
 				}
 				b->nulldepth = lastnull;
 				unmakeNullMove(b);
@@ -264,21 +264,26 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 					current = b->drawvalue;
 					allillegal = 0;
 				} else {
+					extMoveDescription *lastMove = &b->game[b->ply - 1];
+					int quietMove =  (lastMove->topiece == NOTHING) && ((lastMove->flags & PALP) == 0);
 					if (depth > 1) {
 						/* clear killer moves at depth + 1 to avoid killers lingering
 						from far away, irrelevant nodes */
 						clearKillers(b,b->ply + 1);
-						current =
-							-negaScout(b, &submove, depth - 1, -tempbeta, -tempalpha,
-										  flags);
+						current = -negaScout(b, &submove, depth - 1, -tempbeta, -tempalpha, flags);
 						if (current != -ILLEGAL_POSITION) {
 							allillegal = 0;
+							/*
+							if (depth == 2) {
+								tempalpha = current;
+							}*/
+
 						}
 						
 					} else {
 						b->totalnodes++;
 						b->totalquiescent--;
-						current = -quiescentSearch(b, -tempbeta, -tempalpha, flags);
+						current = -quiescentSearch(b, -tempbeta, -tempalpha, flags, quietMove);
 						if (current == -ILLEGAL_POSITION) {
 							b->totalnodes--;
 							b->totalquiescent++;
@@ -287,14 +292,13 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 					if (flags->signal & FLAG_SIGNAL_OUTOFTIME) {
 						gottime = 0;
 					} else if ((current > tempalpha) && (current < beta) && (moveindex > 0)) {
+						int tempcurrent;
 						if (depth > 1) {
-							tempcurrent =
-								-negaScout(b, &submove, depth - 1, -beta, -current,
-											  flags);											  
+							tempcurrent = -negaScout(b, &submove, depth - 1, -beta, -current, flags);
 						} else {
 							b->totalnodes++;
 							b->totalquiescent--;
-							tempcurrent = -quiescentSearch(b, -beta, -current, flags);
+							tempcurrent = -quiescentSearch(b, -beta, -current, flags, quietMove);
 						}
 						if (flags->signal & FLAG_SIGNAL_OUTOFTIME) {
 							gottime = 0;
@@ -323,7 +327,7 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 						flags->signal |= FLAG_SIGNAL_OUTOFTIME;
 						gottime = 0;
 					} else {
-						emptyqueue = tryGetAction(b->input, &inaction);
+						int emptyqueue = tryGetAction(b->input, &inaction);
 						if (!emptyqueue) {
 							handleActionWhileInSearch(b, &inaction, flags);
 							if (flags->signal & FLAG_SIGNAL_OUTOFTIME) gottime = 0;
@@ -334,7 +338,8 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 		}
 	}
 	
-	if (gottime) {	
+	if (gottime) {
+		int noderesult;
 		*move = bestmove;
 		if (allillegal) {
 			/* can't move, stalemate or checkmate */
@@ -399,7 +404,7 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 			hashchunk->depth = depth;
 			hashchunk->from = (unsigned char) bestmove.from;
 			hashchunk->to = (unsigned char) bestmove.to;
-			hashchunk->piece = bestmove.piece;
+			hashchunk->piece = (char) bestmove.piece;
 			
 			
 		}

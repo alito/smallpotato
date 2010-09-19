@@ -169,7 +169,6 @@ int main(int argc, char **argv)
 	prodcons *input, *output;	  /* communication buffers for iothread */
 
 	Cmdline *cmd;
-
 	logfile = gamefile = NULL;
 #ifdef WIN32
 	/* copied from Dann Corbit to use under windows environment */
@@ -212,6 +211,10 @@ int main(int argc, char **argv)
 		} else {
 			logfile = NULL;
 			configvalues.verbose = 0;
+		}
+		if (logfile) {
+			/* Make log file line buffered*/
+			setlinebuf(logfile);
 		}
 		state->logfile = logfile;
 	} else {

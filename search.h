@@ -69,7 +69,7 @@ int oneStep(Board * b, Move * move);
 int multiStep(Board * b, Move * move);
 int multiNegamax(Board * b, Move * move);
 int timedIterative(Board * b, Move * move);
-int quiescentSearch(Board *b, int alpha, int beta, Flags *flags);
+int quiescentSearch(Board *b, int alpha, int beta, Flags *flags, int safeOnly);
 void calculateFinishTime(Board *b, struct timeval *timestarted, struct timeval *dontstartmark, Flags *flags);
 int negaScoutDriver(Board * b, Move * move, int depth, int value, Flags *flags);
 

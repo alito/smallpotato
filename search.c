@@ -28,16 +28,18 @@
 #include <libale.h>
 #include <math.h>
 
-
-int quiescentSearch(Board * b, int alpha,
-						  int beta, Flags * flags)
+/*
+ * Find a quiet spot to evaluate the position.  Play through all the captures till there are no captures left.  Return evaluation then
+ * If safeOnly, the position is assumed to be quiet already, so only check if it's not illegal and hashtable for better evaluations
+ */
+int quiescentSearch(Board * b, int alpha, int beta, Flags * flags, int safeOnly)
 {
 	pieceType color;
 	U64 key, position;
 	hashChunk *hashchunk;
 	hashTable *hashtable;
-	int current, usesuggested = 0,numbermoves, gottime = 1, emptyqueue,
-		lowok = 0, hiok = 0, tempalpha, bestwhen = 0, moveindex = 0;
+	int current, numbermoves, gottime = 1, emptyqueue,
+		tempalpha, bestwhen = 0, moveindex = 0;
 	int best = MINVALUE - 1;
 	Move tempmove, sugmove = NOMOVE, bestmove = NOMOVE;
 	int moveorder[MAXMOVESPERNODE]; 	
@@ -64,14 +66,16 @@ int quiescentSearch(Board * b, int alpha,
 	Note that we are checking for a hash entry before checking the legality of the 
 	position.  We assume that only legal position will get entered in the hashtable */
 	if ((hashchunk->depth >= 0) && (hashchunk->key == key)) {
+		int hiok, lowok;
 		b->totalhash++;
-		if ((hashchunk->flags == HASH_LOWBOUND)
-			 || (hashchunk->flags == HASH_ACCURATE)) {
+		if (hashchunk->flags == HASH_ACCURATE) {
+			hiok = lowok = 1;
+		} else if (hashchunk->flags == HASH_LOWBOUND) {
 			lowok = 1;
-		}
-		if ((hashchunk->flags == HASH_UPBOUND)
-			 || (hashchunk->flags == HASH_ACCURATE)) {
+			hiok = 0;
+		} else if (hashchunk->flags == HASH_UPBOUND) {
 			hiok = 1;
+			lowok = 0;
 		}
 
 		if ((hiok) && (lowok)) {
@@ -118,10 +122,9 @@ int quiescentSearch(Board * b, int alpha,
 			beta = hashchunk->ubound;
 		}*/
 
-		usesuggested = 1;
 		sugmove.from = hashchunk->from;
 		sugmove.to = hashchunk->to;
-		sugmove.piece = hashchunk->piece;			
+		sugmove.piece = (pieceType) hashchunk->piece;
 	}
 
 	tempalpha = alpha;	
@@ -138,7 +141,7 @@ int quiescentSearch(Board * b, int alpha,
 		current = -current;
 	}
 		
-	if ((current >= beta) || (numbermoves == 0)) {
+	if (safeOnly ||(current >= beta) || (numbermoves == 0)) {
 		return current;		
 	}
 
@@ -158,7 +161,7 @@ int quiescentSearch(Board * b, int alpha,
 	while ((moveindex < numbermoves) && (best < beta) && (gottime)) {
 		tempmove = movelist[moveorder[moveindex++]];
 		movePiece(b, &tempmove);
-		current = -quiescentSearch(b, -beta, -tempalpha,flags);
+		current = -quiescentSearch(b, -beta, -tempalpha, flags, 0);
 		unMove(b);
 		if (flags->signal & FLAG_SIGNAL_OUTOFTIME) {
 			gottime = 0;
@@ -222,7 +225,7 @@ int quiescentSearch(Board * b, int alpha,
 			hashchunk->depth = 0;
 			hashchunk->from = (unsigned char) bestmove.from;
 			hashchunk->to = (unsigned char) bestmove.to;
-			hashchunk->piece = bestmove.piece;
+			hashchunk->piece = (char) bestmove.piece;
 		} 
 		 
 		if ((b->verbosity > 13)) {
@@ -263,7 +266,7 @@ static char * recoverPV(Board *b) {
 		((hashchunk->depth == 0) && ((hashchunk->from != 0) || (hashchunk->to != 0))))) {
 			b->pv.line[length].from = hashchunk->from;
 			b->pv.line[length].to = hashchunk->to;
-			b->pv.line[length].piece = hashchunk->piece;
+			b->pv.line[length].piece = (pieceType) hashchunk->piece;
 			if ((hashchunk->from == 0) && (hashchunk->to == 0)) 
 				printf("here at length %d - depth %d\n",length, hashchunk->depth);
 			moveToSan(b,&(b->pv.line[length]), buffer);
@@ -292,7 +295,7 @@ static char * recoverPV(Board *b) {
 void calculateFinishTime(Board *b, struct timeval *timestarted, struct timeval *dontstartmark, Flags *flags) {
 	struct timeval temptime, finishtime, hardlimit;
 	timeControl tc;
-	int hunspermove, hardtime = 0, movesleft, hunstillstop;
+	int hunspermove, hardtime = 0, hunstillstop;
 	FILE *logfile;
 	
 	logfile = b->logfile;
@@ -303,6 +306,7 @@ void calculateFinishTime(Board *b, struct timeval *timestarted, struct timeval *
 		hunspermove = b->timelimit;
 
 	} else {
+		int movesleft;
 		if (tc.moves > 0) {
 			/* if the time control is move based, calculate number of moves left till next
 			time control */
@@ -401,9 +405,9 @@ int timedIterative(Board * b, Move * move)
 	hashTable *hashtable;
 	FILE *logfile;
 	struct timeval timestarted, dontstartmark, temptime, timesincestart;
-	int best, current, currlevel, necessarymoves, levelcomplete, pasttime, maxdepth,
-		canmove, incheck, gottime, finished, thebest, totalmoves, diffmove,
-		draw, startnodes, endnodes, moveindex, numbermoves, epdfound,
+	int best, current, currlevel, necessarymoves, levelcomplete, maxdepth,
+		canmove, incheck, gottime, thebest, totalmoves, diffmove,
+		startnodes, endnodes, moveindex, numbermoves, epdfound,
 		startevals, endevals, starthash, endhash, startquiescent, endquiescent, checkmate,
 		initialeval, i;
 
@@ -437,7 +441,7 @@ int timedIterative(Board * b, Move * move)
 	calculateFinishTime(b, &timestarted, &dontstartmark, &flags);
 	
 	currlevel = gottime = 1;
-	epdfound = levelcomplete = pasttime = finished = checkmate = 0;
+	epdfound = levelcomplete = checkmate = 0;
 
 	if (b->depth > 0) {
 		maxdepth = b->depth;
@@ -478,7 +482,6 @@ int timedIterative(Board * b, Move * move)
 				moveindex = 0;
 				while (moveindex < numbermoves) {
 					tempmove = movelist[moveindex++];
-					draw = 0;
 					movePiece(b, &tempmove);
 					canmove = canMove(b);
 					if (canmove == 0) {
@@ -495,16 +498,13 @@ int timedIterative(Board * b, Move * move)
 						} else {
 							/* stalemate */
 							current = b->drawvalue;
-							draw = 1;
 						}
 					} else {
 						if (b->fifty[b->ply] >= 100) {
 							current = b->drawvalue;
-							draw = 1;
 						} else {
 							if (isRepetitionDraw(b)) {
 								current = b->drawvalue;
-								draw = 1;
 							} else {
 								current = (*(b->evalboard))
 									(b);
@@ -556,7 +556,7 @@ int timedIterative(Board * b, Move * move)
 				hashchunk->flags = HASH_ACCURATE;
 				hashchunk->from = currbest.from;
 				hashchunk->to = currbest.to;
-				hashchunk->piece = currbest.piece;
+				hashchunk->piece = (char) currbest.piece;
 						
 				if ((best >= MAXVALUE - b->ply - currlevel + 2) || 
 				(best <= MINVALUE + b->ply + currlevel - 2)) {

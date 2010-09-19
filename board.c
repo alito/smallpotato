@@ -1543,8 +1543,15 @@ int generateTentativeQuiescentMoveList(const Board * const b, Move *movelist) {
 		oppking = b->bkingpos;		
 	}
 	
-	for (; (from < I8) && (b->colors[from] != color); ++from);
-	while (from < I8) {
+	/* Find the first piece on our side.
+	 * Assume there is a piece on our side, because otherwise our king was taken at some point prior, and it would have been picked up */
+	while (1) {
+		if (b->colors[from] == color) break;
+		if (++from & OUT) {
+			from += 8;
+		}
+	}
+	while (1) {
 		newmovecount = generateCaptures[b->squares[from]](b,from,movelist,movecount);
 		/* check if attacking opposite king */
 		while (movecount < newmovecount) {
@@ -1554,7 +1561,13 @@ int generateTentativeQuiescentMoveList(const Board * const b, Move *movelist) {
 				goto outOfLoop;
 			}
 		}
-		for (++from; (b->colors[from] != color) && (from < I8); ++from);
+		while (1) {
+			if (++from & OUT) {
+				if (from >= I8) goto outOfLoop;
+				from += 8;
+			}
+			if (b->colors[from] == color) break;
+		}
 	}
 	outOfLoop:
 	return movecount;

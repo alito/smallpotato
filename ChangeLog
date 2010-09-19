@@ -911,6 +911,17 @@ Tue 2010/09/13 Alejandro Dubrovsky <alito@organicrobot.com>
 Tue 2010/09/14 Alejandro Dubrovsky <alito@organicrobot.com>
     WACing at 272/300 at 10 seconds on a Core 2 Duo E4300
 
-Tue 2010/09/14 Alejandro Dubrovsky <alito@organicrobot.com>
+Tue 2010/09/16 Alejandro Dubrovsky <alito@organicrobot.com>
     pieces.c: Make the generate functions take a const Board pointer.
 	eval.c: Get rid of king safety.
+	
+Tue 2010/09/17 Alejandro Dubrovsky <alito@organicrobot.com>
+    hashstruct.h: Make the hash chunk 4 bytes smaller.
+
+Tue 2010/09/17 Alejandro Dubrovsky <alito@organicrobot.com>
+    unches.c: Make logging line-buffered
+    search.c, negascout.c:  When the last move wasn't a capture, don't do a full quiescent check. 
+    Only check for legality, and evaluation.
+    board.c (generateTentativeQuiescentMoveList): More hypothetical microoptimisations.
+    
+	
