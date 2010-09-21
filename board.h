@@ -231,7 +231,7 @@ int isStalemate(Board * board);
 int isRepetitionDraw(Board * board);
 int isInsufficientMaterialDraw(Board * board);
 int generateMoveList(Board * const b, Move *movelist);
-int generateTentativeMoveList(const Board * const b, Move *movelist);
+int generateTentativeMoveList(Board * const b, Move *movelist);
 int generateQuiescentMoveList(Board * const b, Move *movelist);
 int generateTentativeQuiescentMoveList(const Board * const b, Move *movelist);
 int checkRepetitionDraw(Board * board);

@@ -32,7 +32,7 @@
  * Find a quiet spot to evaluate the position.  Play through all the captures till there are no captures left.  Return evaluation then
  * If safeOnly, the position is assumed to be quiet already, so only check if it's not illegal and hashtable for better evaluations
  */
-int quiescentSearch(Board * b, int alpha, int beta, Flags * flags, int safeOnly)
+int quiescentSearch(Board * b, int alpha, int beta, Flags * flags)
 {
 	pieceType color;
 	U64 key, position;
@@ -141,7 +141,7 @@ int quiescentSearch(Board * b, int alpha, int beta, Flags * flags, int safeOnly)
 		current = -current;
 	}
 		
-	if (safeOnly ||(current >= beta) || (numbermoves == 0)) {
+	if ((current >= beta) || (numbermoves == 0)) {
 		return current;		
 	}
 
@@ -161,7 +161,7 @@ int quiescentSearch(Board * b, int alpha, int beta, Flags * flags, int safeOnly)
 	while ((moveindex < numbermoves) && (best < beta) && (gottime)) {
 		tempmove = movelist[moveorder[moveindex++]];
 		movePiece(b, &tempmove);
-		current = -quiescentSearch(b, -beta, -tempalpha, flags, 0);
+		current = -quiescentSearch(b, -beta, -tempalpha, flags);
 		unMove(b);
 		if (flags->signal & FLAG_SIGNAL_OUTOFTIME) {
 			gottime = 0;

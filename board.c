@@ -1498,7 +1498,7 @@ int generateQuiescentMoveList(Board * const b, Move *movelist) {
 /* Generate a list of possibly legal moves (maybe leaving the player in check), 
 store them in movelist, return number of moves.  Return -1 if taking oppositions
 king is an option (illegal position) */
-int generateTentativeMoveList(const Board * const b, Move *movelist) {
+int generateTentativeMoveList(Board * const b, Move *movelist) {
 	int movecount = 0, from = 0, newmovecount = 0, ok = 1, oppking;
 	pieceType color;
 	

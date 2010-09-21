@@ -190,12 +190,11 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 	
 	if (gottime) {		 
 		numbermoves = generateTentativeMoveList(b,movelist);
-		/*numbermoves = generateMoveList(b,movelist);*/
 		
 		if (numbermoves > 1) {
-			/* before ordering, try null-move search.  We have to do this after the move
-			generation to check if this is a legal position 
-			do null if the last move leading to this depth wasn't a null move,
+			/* Before ordering, try null-move search.  We have to do this after the move
+			generation to check if this is a legal position.
+			Do null if the last move leading to this depth wasn't a null move,
 			there are major pieces left (to avoid zugzwang-laden positions),
 			we are not searching a PV-node,
 			and we are not in mating phase */			
@@ -212,8 +211,7 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 					canttouchme = -negaScout(b, &submove, depth - DEPTH_REDUCTION - 1, 
 					-tempbeta, -tempalpha, flags);			
 				} else {
-					/* this was a quiet move. Evaluate only */
-					canttouchme = -quiescentSearch(b, -tempbeta, -tempalpha, flags, 1);
+					canttouchme = -quiescentSearch(b, -tempbeta, -tempalpha, flags);
 				}
 				b->nulldepth = lastnull;
 				unmakeNullMove(b);
@@ -258,7 +256,7 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 			if (b->fifty[b->ply] >= 100) {
 				/* FIXME: what if there's checkmate and 100 ply at the same time? */
 				/* do a quick check to see if the move we just did put us in check */
-				current = -quiescentSearch(b, -tempbeta, -tempalpha, flags, 1);
+				current = -quiescentSearch(b, -tempbeta, -tempalpha, flags);
 				if (current != -ILLEGAL_POSITION) {
 					current = b->drawvalue;
 					allillegal = 0;
@@ -268,8 +266,6 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 					current = b->drawvalue;
 					allillegal = 0;
 				} else {
-					extMoveDescription *lastMove = &b->game[b->ply - 1];
-					int quietMove =  (lastMove->topiece == NOTHING) && ((lastMove->flags & PALP) == 0);
 					if (depth > 1) {
 						/* clear killer moves at depth + 1 to avoid killers lingering
 						from far away, irrelevant nodes */
@@ -287,7 +283,7 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 					} else {
 						b->totalnodes++;
 						b->totalquiescent--;
-						current = -quiescentSearch(b, -tempbeta, -tempalpha, flags, quietMove);
+						current = -quiescentSearch(b, -tempbeta, -tempalpha, flags);
 						if (current == -ILLEGAL_POSITION) {
 							b->totalnodes--;
 							b->totalquiescent++;
@@ -302,7 +298,7 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 						} else {
 							b->totalnodes++;
 							b->totalquiescent--;
-							tempcurrent = -quiescentSearch(b, -beta, -current, flags, quietMove);
+							tempcurrent = -quiescentSearch(b, -beta, -current, flags);
 						}
 						if (flags->signal & FLAG_SIGNAL_OUTOFTIME) {
 							gottime = 0;
