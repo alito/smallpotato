@@ -30,7 +30,7 @@ char *fsafegets(FILE * f, unsigned int chunksize)
 			wholebuff = strcat(wholebuff, inbuff);
 			newline = strchr(wholebuff, '\n');
 		} while ((newline == NULL) && (!feof(f)));
-		if (wholebuff)
+		if ((wholebuff) && (newline != NULL))
 			*newline = '\0';
 		free(inbuff);
 	} else

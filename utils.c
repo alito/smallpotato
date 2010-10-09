@@ -757,7 +757,7 @@ int parseResult(char *astring, Result * result)
 #define SOUGHTMOVEMODE 7
 
 static char *parseCommonFENEPD(char *fen, Board *board, int *thepalp) {
-	int done, i, mode, empty, square, column, moves, fifty, palp;
+	int done, i, mode, empty, square, column, palp;
 	char * result;
 	if (fen == NULL) return NULL;
 	
@@ -765,7 +765,7 @@ static char *parseCommonFENEPD(char *fen, Board *board, int *thepalp) {
 	initialiseBoard(board);
 	square = A8;  /* initial square reported */
 	board->wkcastle = board->bkcastle = board->bqcastle = board->wqcastle = 0;
-	moves = fifty = palp = 0;
+	palp = 0;
 	for (i = 0; i < 128; i++) {
 		board->squares[i] = board->colors[i] = NOTHING;
 	}

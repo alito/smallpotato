@@ -59,6 +59,10 @@ void *doInput(void *details)
 			newline = strchr(wholebuff, '\n');
 		}
 		while (newline == NULL);
+		if (newline == NULL) {
+			fprintf(stderr, "Error reading from input\n");
+			continue;
+		}
 		*newline = '\0';
 #ifdef DEBUG		
 		fprintf(debugFile,"%s\n",wholebuff);

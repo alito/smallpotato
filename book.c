@@ -182,6 +182,10 @@ int getBookMove(Board *board, Move *move) {
 		allmoves = (BookMove *) data.dptr;
 		totalranking = 0;
 		for (i = 0; i < howmany; i++) totalranking += allmoves[i].ranking;
+		if (totalranking == 0) {
+			return BOOK_FAILED;
+		}
+
 		ranking = random() % totalranking;
 		i = -1;
 		do {

@@ -83,6 +83,10 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 				} else if (hashchunk->flags == HASH_UPBOUND) {
 					hiok = 1;
 					lowok = 0;
+				} else {
+					fprintf(logfile,
+							  "hash value wasn't marked as accurate, lowerbound or upperbound\n");
+					hiok = lowok = 0;
 				}
 				if (hashchunk->depth >= depth) {
 					if ((hiok) && (lowok)) {
