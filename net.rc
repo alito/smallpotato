@@ -7,8 +7,8 @@
 
 
 # Transposition table size can be specified by either size in kilobytes, as in
-HashKilobytes = 262144
-# (that is 32 megabytes)
+HashKilobytes = 1048576
+# (that is 1024 megabytes)
 # or as in size in number of entries such as:
 # HashEntries = 4000000
 # (if both are specified, hash entries takes precedence
