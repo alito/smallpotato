@@ -9,37 +9,49 @@
 #define _GNU_SOURCE
 #define _REENTRANT
 
-char *fsafegets(FILE * f, unsigned int chunksize)
+
+/* like fgets, but it gets until newline is found, increasing buffer size in chunkSize bytes */
+char *fsafegets(FILE * fileInput, unsigned int chunkSize)
 {
-	char *inbuff, *wholebuff, *newline;
-	int curbuflen;
-	newline = NULL;
-	if (chunksize > 0) {
-		wholebuff = (char *) xmalloc(chunksize);
-		inbuff = (char *) xmalloc(chunksize);
-		curbuflen = 0;
-		memset((void *) wholebuff, '\0', chunksize);
+	char *inputBuffer, *wholeBuffer = NULL, *newline = NULL;
+	int currentBufferLength;
+
+	if (chunkSize > 0) {
+		inputBuffer = (char *) xmalloc(chunkSize);
+		currentBufferLength = 0;
+
 		do {
-			if (fgets(inbuff, chunksize, f) == NULL) {
-				free(wholebuff);
-				wholebuff = NULL;
+			if (fgets(inputBuffer, chunkSize, fileInput) == NULL) {
+				// Something ugly happened. Return NULL
+				free(inputBuffer);
+				if (wholeBuffer) {
+					free(wholeBuffer);
+					wholeBuffer = NULL;
+				}
 				break;
 			}
-			curbuflen += chunksize;
-			wholebuff = (char *) xrealloc((void *) wholebuff, curbuflen);
-			wholebuff = strcat(wholebuff, inbuff);
-			newline = strchr(wholebuff, '\n');
-		} while ((newline == NULL) && (!feof(f)));
-		if ((wholebuff) && (newline != NULL))
+			currentBufferLength += chunkSize;
+
+			if (wholeBuffer) {
+				wholeBuffer = (char *) xrealloc((void *) wholeBuffer, currentBufferLength);
+				strcat(wholeBuffer, inputBuffer);
+			} else {
+				// New buffer. Allocate and copy from the input buffer
+				wholeBuffer = (char *) xmalloc(currentBufferLength);
+				strcpy(wholeBuffer, inputBuffer);
+			}
+			newline = strchr(wholeBuffer, '\n');
+		} while ((newline == NULL) && (!feof(fileInput)));
+		if ((wholeBuffer) && (newline != NULL))
 			*newline = '\0';
-		free(inbuff);
-	} else
-		wholebuff = NULL;
-	return wholebuff;
+		free(inputBuffer);
+	} else // Useless chunkSize
+		wholeBuffer = NULL;
+	return wholeBuffer;
 }
 
 /* return a pointer to a uppercase string version of astring */
-char *uppercase(char *astring)
+char *uppercase(const char *astring)
 {
 	char *newstring, *ptr;
 	if (astring == NULL) {
@@ -55,7 +67,7 @@ char *uppercase(char *astring)
 
 
 /* return a pointer to a lowercase string version of astring */
-char *lowercase(char *astring)
+char *lowercase(const char *astring)
 {
 	char *newstring, *ptr;
 	if (astring == NULL) {
@@ -71,25 +83,33 @@ char *lowercase(char *astring)
 
 
 /* strip leading and trailing spaces from a string*/
-char *strip(char *astring)
+char *strip(const char *astring)
 {
-	char *newstring, *startptr, *endptr, *ptr;
-	int length;
+	char *newstring;
+	const char* startptr, *endptr, *ptr;
+	long length;
 	if (astring == NULL) {
 		return NULL;
 	} else {
+		// Find first non-space character
 		for (startptr = astring; *startptr == ' '; startptr++);
+
+		// If none there, return an empty string
 		if (*startptr == '\0') {
 			newstring = (char *) xmalloc(1);
 			*newstring = '\0';
 		} else {
 			endptr = startptr;
+
+			// Find the last non-space character
 			for (ptr = startptr + 1; *ptr != '\0'; ptr++) {
 				if (*ptr != ' ') {
 					endptr = ptr;
 				}
 			}
-			length = (int) endptr - (int) startptr + 1;
+
+			// Copy from first to last non-space character
+			length = (long) endptr - (long) startptr + 1;
 			newstring = (char *) xmalloc(length + 1);
 			memcpy(newstring, startptr, length);
 			newstring[length] = '\0';
@@ -98,18 +118,26 @@ char *strip(char *astring)
 	}
 }
 
-char *stripall(char *astring, char achar)
+/* return a malloced version of astring stripped of all occurrences of achar */
+char *stripall(const char *astring, char achar)
 {
-	char *newstring, *startptr;
-	int length, current;
+	char *newstring;
+	const char* startptr;
+	long length, current;
+
+	// Nothing to strip or nothing there
 	if ((astring == NULL) || (achar == '\0')) {
 		return NULL;
 	} else {
 		startptr = astring;
+
+		// Empty string in, empty string out
 		if (*startptr == '\0') {
 			newstring = (char *) xmalloc(1);
 			*newstring = '\0';
 		} else {
+
+			// Two passes. First one to find out how long a string we need, second to copy the characters across
 			length = 0;
 			for (startptr = astring; *startptr != '\0'; startptr++) {
 				if (*startptr != achar) {
@@ -129,21 +157,9 @@ char *stripall(char *astring, char achar)
 	}
 }
 
-int
-timespec_subtract(struct timespec *result, struct timespec *x,
-						struct timespec *y)
-{
-	/* Perform the carry for the later subtraction by updating y. */
-	result->tv_nsec = x->tv_nsec - y->tv_nsec;
-	result->tv_sec = x->tv_sec - y->tv_sec;
-	while (result->tv_nsec < 0) {
-		result->tv_sec--;
-		result->tv_nsec += 1000000000;
-	}
-	return x->tv_sec < y->tv_sec;
-}
 
-int parseInteger(char *astring)
+/* string to integer (zero on error) */
+int parseInteger(const char *astring)
 {
 	int returnval;
 	char *endptr;
@@ -156,8 +172,8 @@ int parseInteger(char *astring)
 	return returnval;
 }
 
-
-double parseDouble(char *astring)
+/* string to double (zero on error) */
+double parseDouble(const char *astring)
 {
 	double returnval;
 	char *endptr;
@@ -176,7 +192,7 @@ double parseDouble(char *astring)
  * Thorsten Greiner (thorsten.greiner@web.de)
  */
 
-char *nextToken(char **string, const char *delim)
+char *nextToken(char **string, const char *delimiter)
 {
 	char *start = *string;
 	char *end;
@@ -188,7 +204,7 @@ char *nextToken(char **string, const char *delim)
 	while(flag) {
 		flag = 0;
 		if(*start == '\0') return NULL;
-		for(t = delim; *t; t++) {
+		for(t = delimiter; *t; t++) {
 			if(*t == *start) {
 				flag = 1;
 				start++;
@@ -204,7 +220,7 @@ char *nextToken(char **string, const char *delim)
 			*string = end;
 			return start;
 		}
-		for(t = delim; *t; t++) {
+		for(t = delimiter; *t; t++) {
 			if(*t == *end) {
 				*end = 0;
 				*string = end+1;

@@ -64,7 +64,7 @@ static VOID *fixup_null_alloc (size_t n);
 VOID *xmalloc (size_t n);
 VOID *xcalloc (size_t n, size_t s);
 VOID *xrealloc (VOID *p, size_t n);
-char *xstrdup (char *p);
+char *xstrdup (const char *p);
 #endif
 
 
@@ -73,8 +73,7 @@ char *xstrdup (char *p);
 int xmalloc_exit_failure = EXIT_FAILURE;
 
 static VOID *
-fixup_null_alloc (n)
-     size_t n;
+fixup_null_alloc (size_t n)
 {
   VOID *p;
 
@@ -89,8 +88,7 @@ fixup_null_alloc (n)
 /* Allocate N bytes of memory dynamically, with error checking.  */
 
 VOID *
-xmalloc (n)
-     size_t n;
+xmalloc (size_t n)
 {
   VOID *p;
 
@@ -103,8 +101,7 @@ xmalloc (n)
 /* Allocate memory for N elements of S bytes, with error checking.  */
 
 VOID *
-xcalloc (n, s)
-     size_t n, s;
+xcalloc (size_t n, size_t s)
 {
   VOID *p;
 
@@ -119,9 +116,7 @@ xcalloc (n, s)
    If P is NULL, run xmalloc.  */
 
 VOID *
-xrealloc (p, n)
-     VOID *p;
-     size_t n;
+xrealloc (VOID *p, size_t n)
 {
   if (p == 0)
     return xmalloc (n);
@@ -134,8 +129,7 @@ xrealloc (p, n)
 /* Make a copy of a string in a newly allocated block of memory. */
 
 char *
-xstrdup (str)
-     char *str;
+xstrdup (const char* str)
 {
   VOID *p;
 
