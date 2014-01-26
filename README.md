@@ -5,10 +5,13 @@ This is my attempt at a chess engine.  The code is messy and sparsely commented.
 weak compared with other engines but still very strong compared with most humans. **It currently
 does not run in 64-bit OSes**
 
-To run using xboard as a frontend, use 'xboard -fcp "smallpotato <options>"' 
-To run it through WinBoard, you will need to add something like the following to your winboard.ini:
-/fcp "smallpotato <theoptions>" /fd "full\path\to\smallpotato\directory"
-/scp "smallpotato <theoptions>" /sd "full\path\to\smallpotato\directory"
+To run using xboard as a frontend, use 
+> xboard -fcp "smallpotato \[options\]"
+
+To run it through WinBoard, you will need to add something like the following to your winboard.ini:  
+> /fcp "smallpotato \[options\]" /fd "full\path\to\smallpotato\directory"  
+> /scp "smallpotato \[options\]" /sd "full\path\to\smallpotato\directory"  
+
 If you are using some other interface then you should read its documentation.
 
 The preferred method of configuration is to use the configuration file.  "sp.rc" is first looked
@@ -31,7 +34,7 @@ be gotten from: http://wsd.iitb.fhg.de/~kir/clighome/
 Ideas were stolen/borrowed from lots of places.  Some of them follow:
 
 - Crafty
-- F.D. Laramée, and his how-to-write-a-chess-program tutorial from gamedev.net (http://www.gamedev.net/reference/articles/article1014.asp)
+- F.D. LaramÃ©e, and his how-to-write-a-chess-program tutorial from gamedev.net (http://www.gamedev.net/reference/articles/article1014.asp)
 - GNU Chess
 - Alpha-Beta & TT by Aske Plaat, Jonathan Schaeffer, Wim Pijls and Arie de Bruin (http://www.cs.vu.nl/~aske/Papers/tr9417.pdf)
 - MTD(f) - A Minimax Algorithm faster than NegaScout, by Aske Plaat
@@ -41,7 +44,7 @@ Ideas were stolen/borrowed from lots of places.  Some of them follow:
 - Amy <http://www.stethojupi.de/software.html>
 - KnightCap <http://samba.org/KnightCap/> and http://syseng.anu.edu.au/~jon/papers/knightcap.ps.gz
 - The Design and Implementation of the Rookie 2.0 Chess Playing Program by M.N.J. van Kervinck at http://brick.bitpit.net/~marcelk/2002/marcelk-thesis.ps.gz
-- Rebel's secrets by Ed Schröder at http://members.home.nl/matador/chess840.htm
+- Rebel's secrets by Ed SchrÃ¶der at http://members.home.nl/matador/chess840.htm
 
 
 Comments, code, bugreports and patches are welcome.
