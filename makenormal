@@ -1,3 +1,0 @@
-CFLAGS="-pipe -O3 -ffast-math -W -Wall -Winline -march=core2 -mtune=core2" configure
-make clean && make
-
