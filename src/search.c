@@ -76,6 +76,9 @@ int quiescentSearch(Board * b, int alpha, int beta, Flags * flags)
 		} else if (hashchunk->flags == HASH_UPBOUND) {
 			hiok = 1;
 			lowok = 0;
+		} else {
+			// Should never happen, but might as well mark it as don't use
+			hiok = lowok = 0;
 		}
 
 		if ((hiok) && (lowok)) {

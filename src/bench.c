@@ -85,9 +85,9 @@ int benchMoveCycle(Board * b, int depth) {
 }
 
 void benchEval(Board *b, int iterations) {
-	int i, result;
+	int i;
 	for (i = 0; i < iterations; i++) {
-		result = (*(b->evalboard)) (b);
+		(*(b->evalboard)) (b);
 	}
 }
 
@@ -111,7 +111,7 @@ void benchEPDTestSuite(Board *b,char *filename) {
 				beginquote = strchr(semicolon,'"');
 				*semicolon = '\0';
 				if (beginquote) {
-					idline = (char *) ((int) beginquote + 1);
+					idline = (char *) ((long) beginquote + 1);
 					endquote = strrchr(idline,'"');
 					if (endquote) {
 						*endquote = '\0';

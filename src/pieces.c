@@ -614,11 +614,11 @@ static int bkingGenerateCaptures(const Board *b, int from, Move *movelist, int i
 }
 
 
-static int nothingGenerate(Board *board, int from, Move *movelist, int index) {
+static int nothingGenerate(Board *board __attribute__((unused)), int from __attribute__((unused)), Move *movelist __attribute__((unused)), int index) {
 	return index;
 }
 
-static int nothingGenerateCaptures(const Board *board, int from, Move *movelist, int index) {
+static int nothingGenerateCaptures(const Board *board __attribute__((unused)), int from __attribute__((unused)), Move *movelist __attribute__((unused)), int index) {
 	return index;
 }
 

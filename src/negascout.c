@@ -27,6 +27,7 @@
 #include "ai.h"
 #include <libale.h>
 #include <sys/time.h>
+#include <inttypes.h>
 
 
 /* patched into the verynewalphabeta code templating from 
@@ -92,7 +93,7 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 					if ((hiok) && (lowok)) {
 						if (b->verbosity > 15) {
 							fprintf(logfile,
-									  "hashed exact level %d\t value %d\t hash key %llu\n",
+									  "hashed exact level %d\t value %d\t hash key %" PRIu64 "\n",
 									  hashchunk->depth, hashchunk->lbound, key);
 						}
 						move->from = hashchunk->from;
@@ -109,7 +110,7 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 					if ((hashchunk->lbound >= beta) && (lowok)) {
 						if (b->verbosity > 15) {
 							fprintf(logfile,
-									  "hashed beta cut off level %d\t value %d\t hash key %llu\n",
+									  "hashed beta cut off level %d\t value %d\t hash key %" PRIu64 "\n",
 									  hashchunk->depth, hashchunk->lbound, key);
 						}
 						move->from = hashchunk->from;
@@ -123,7 +124,7 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 					if ((hashchunk->ubound <= alpha) && (hiok)) {
 						if (b->verbosity > 15) {
 							fprintf(logfile,
-									  "hashed alpha cut off level %d\t value %d\thash key %llu\n",
+									  "hashed alpha cut off level %d\t value %d\thash key %" PRIu64 "\n",
 									  hashchunk->depth, hashchunk->ubound, key);
 						}
 						move->from = hashchunk->from;
@@ -138,7 +139,7 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 					if ((lowok) && (hashchunk->lbound > alpha)) {
 						if (b->verbosity > 15) {
 							fprintf(logfile,
-									  "modified alpha by hash level %d\t value %d\thash key %llu\n",
+									  "modified alpha by hash level %d\t value %d\thash key %" PRIu64 "\n",
 									  hashchunk->depth, hashchunk->lbound, key);
 						}
 						if (hashchunk->lbound >= MAXVALUE - MAXPLYPERGAME) {
@@ -155,7 +156,7 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 					if ((hiok) && (hashchunk->ubound < beta)) {
 						if (b->verbosity > 15) {
 							fprintf(logfile,
-									  "modified beta by hash level %d\t value %d\thash key %llu\n",
+									  "modified beta by hash level %d\t value %d\thash key %" PRIu64 "\n",
 									  hashchunk->depth, hashchunk->ubound, key);
 						}
 						if (hashchunk->ubound <= MINVALUE + MAXPLYPERGAME) {
@@ -171,13 +172,13 @@ int negaScout ( Board *b, Move *move, int depth, int alpha, int beta, Flags *fla
 				sugmove.piece = (pieceType) hashchunk->piece;
 				if (b->verbosity > 15) {
 					fprintf(logfile,
-							  "hashed suggested move level %d\t value %d\thash key %llu\n",
+							  "hashed suggested move level %d\t value %d\thash key %" PRIu64 "\n",
 							  hashchunk->depth, hashchunk->lbound, key);
 				}
 	
 			} else {
 				if (b->verbosity > 15) {
-					fprintf(logfile, "hash collision\thash key %llu\n", key);
+					fprintf(logfile, "hash collision\thash key %" PRIu64 "\n", key);
 					if (b->verbosity > 30) {
 						if (key != getHashKey(hashtable,b)) {
 							fprintf(logfile, "HASH KEYS DO NOT MATCH\n");

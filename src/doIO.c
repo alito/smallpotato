@@ -27,10 +27,11 @@ void *doInput(void *details)
 	prodcons *toProg;
 	Action action;
 	const int BUFF_INC = 1000;
-	char inbuff[BUFF_INC], *wholebuff, *newline, *stripped, *theinput,
+	char inputBuffer[BUFF_INC], *wholeBuffer, *newline, *stripped, *theinput,
 		*firstspace, *command;
 	char *rest;
-	int curbuflen, curmaxlen, retval, commandlen, temp, xboardmode = 0;
+	int temp, xboardmode = 0;
+	long retval, commandLength, currentMaxLength, currentBufferLength;
 
 #ifdef DEBUG	
 	FILE *debugFile;
@@ -38,25 +39,25 @@ void *doInput(void *details)
 	setlinebuf(debugFile);
 #endif
 	newline = NULL;
-	retval = (int) NULL;
+	retval = (long) NULL;
 	toProg = ((threadParameter *) details)->input;
-	wholebuff = (char *) xmalloc(BUFF_INC);
-	curmaxlen = BUFF_INC;
+	wholeBuffer = (char *) xmalloc(BUFF_INC);
+	currentMaxLength = BUFF_INC;
 	while ((void *) retval == NULL) {
-		curbuflen = 0;
-		memset((void *) wholebuff, '\0', curmaxlen);
+		currentBufferLength = 0;
+		memset((void *) wholeBuffer, '\0', currentMaxLength);
 		do {
-			if (fgets(inbuff, sizeof inbuff, stdin) == NULL) {
+			if (fgets(inputBuffer, sizeof inputBuffer, stdin) == NULL) {
 				retval = -1;
 				break;
 			}
-			curbuflen += BUFF_INC;
-			if (curbuflen > curmaxlen) {
-				wholebuff = (char *) xrealloc((void *) wholebuff, curbuflen);
-				curmaxlen = curbuflen;
+			currentBufferLength += BUFF_INC;
+			if (currentBufferLength > currentMaxLength) {
+				wholeBuffer = (char *) xrealloc((void *) wholeBuffer, currentBufferLength);
+				currentMaxLength = currentBufferLength;
 			}
-			wholebuff = strcat(wholebuff, inbuff);
-			newline = strchr(wholebuff, '\n');
+			wholeBuffer = strcat(wholeBuffer, inputBuffer);
+			newline = strchr(wholeBuffer, '\n');
 		}
 		while (newline == NULL);
 		if (newline == NULL) {
@@ -65,27 +66,27 @@ void *doInput(void *details)
 		}
 		*newline = '\0';
 #ifdef DEBUG		
-		fprintf(debugFile,"%s\n",wholebuff);
+		fprintf(debugFile,"%s\n",wholeBuffer);
 #endif
-		stripped = strip(wholebuff);
+		stripped = strip(wholeBuffer);
 		action.command = xstrdup(stripped);
 		theinput = uppercase(stripped);
 		free(stripped);
 		if ((theinput != NULL) && (strlen(theinput) > 0)) {
 			firstspace = strchr(theinput, ' ');
 			if (firstspace == NULL) {
-				commandlen = strlen(theinput);
+				commandLength = strlen(theinput);
 				rest = NULL;
 			} else {
-				commandlen = (int) firstspace - (int) theinput;
-				rest = xstrdup((char *) ((int) firstspace + 1));
+				commandLength = (long) firstspace - (long) theinput;
+				rest = xstrdup((char *) ((long) firstspace + 1));
 			}
 			/* if (rest != NULL) {
 			 * printf("rest: %s\n",rest);
 			 * } */
-			command = (char *) xmalloc(commandlen + 1);
-			memcpy(command, theinput, commandlen);
-			command[commandlen] = '\0';
+			command = (char *) xmalloc(commandLength + 1);
+			memcpy(command, theinput, commandLength);
+			command[commandLength] = '\0';
 
 			if (strcmp(command, "USERMOVE") == 0) {
 				action.theType = USERMOVE;
@@ -103,7 +104,7 @@ void *doInput(void *details)
 			if ((strcmp(command, "SP_SANMOVE") == 0) || 
 			((!xboardmode) && (strcmp(command, "SANMOVE") == 0))) {
 				action.theType = SP_SANMOVE;
-				action.data.message = (char *) xstrdup((char *) ((int) action.command + commandlen + 1));
+				action.data.message = (char *) xstrdup((char *) ((long) action.command + commandLength + 1));
 				if (rest != NULL) {
 					free(rest);
 					rest = NULL;
@@ -328,7 +329,7 @@ void *doInput(void *details)
 					rest = NULL;
 				}
 				action.data.message =
-					(char *) xstrdup((char *) ((int) action.command + commandlen + 1));
+					(char *) xstrdup((char *) ((long) action.command + commandLength + 1));
 				putAction(toProg, &action);
 				goto ENDPARSE;
 			}
@@ -566,7 +567,7 @@ void *doInput(void *details)
 			if ((strcmp(command, "SP_EPDSUITE") == 0) || 
 			((!xboardmode) && (strcmp(command, "EPDSUITE") == 0))) {
 				action.theType = SP_EPDSUITE;
-				action.data.message = (char *) xstrdup((char *) ((int) action.command  + commandlen + 1));
+				action.data.message = (char *) xstrdup((char *) ((long) action.command  + commandLength + 1));
 				if (rest != NULL) {
 					free(rest);
 					rest = NULL;
@@ -578,7 +579,7 @@ void *doInput(void *details)
 			if ((strcmp(command, "SP_EPDLINE") == 0) || 
 			((!xboardmode) && (strcmp(command, "EPDLINE") == 0))) {
 				action.theType = SP_EPDLINE;
-				action.data.message = (char *) xstrdup((char *) ((int) action.command  + commandlen + 1));
+				action.data.message = (char *) xstrdup((char *) ((long) action.command  + commandLength + 1));
 				if (rest != NULL) {
 					free(rest);
 					rest = NULL;
@@ -590,7 +591,7 @@ void *doInput(void *details)
 			if ((strcmp(command, "SP_MODIFYBOOK") == 0) || 
 			((!xboardmode) && (strcmp(command, "MODIFYBOOK") == 0))) {
 				action.theType = SP_MODIFYBOOK;
-				action.data.message = (char *) xstrdup((char *) ((int) action.command  + commandlen + 1));
+				action.data.message = (char *) xstrdup((char *) ((long) action.command  + commandLength + 1));
 				if (rest != NULL) {
 					free(rest);
 					rest = NULL;
@@ -668,7 +669,7 @@ void *doInput(void *details)
 		free(theinput);
 		theinput = NULL;
 	}
-	free(wholebuff);
+	free(wholeBuffer);
 #ifdef DEBUG		
 	fclose(debugFile);  
 #endif
@@ -684,14 +685,13 @@ void *doOutput(void *details)
 	char *ourname;
 	Action currAction;
 	threadParameter * parameters;
-	int haventQuit, xboardmode, protover, icsmode, computermode;
+	int haventQuit, xboardmode, protover, icsmode;
 	parameters = (threadParameter *) details;
 	fromProg = parameters->output;
 	ourname = parameters->name;
 	haventQuit = 1;
 	xboardmode = 0;
 	icsmode = 0;
-	computermode = 0;
 	protover = 1;
 	memset(buffer, 0, 100);
 	fprintf(stdout,"This is " PACKAGE_STRING ".  This is the last prompt you'll see\n"
@@ -869,7 +869,6 @@ void *doOutput(void *details)
 			}
 			break;
 		case COMPUTER:
-			computermode = 1;
 			break;
 		
 		case UNKNOWN_COMMAND:
