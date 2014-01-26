@@ -93,7 +93,7 @@ String -book bookfile {opening book file} {count = 1,1}
 #    {range = 0, 47.11 } \
 #    {default = 2 4 8 16.11}
 
-Float -guiveup resign {Pawn values deficit at which to resign (default is 6.5, will be ignored if combined with -relative) } \
+Float -giveup resign {Pawn values deficit at which to resign (default is 6.5, will be ignored if combined with -relative) } \
 {count=1,1}
 
 ## special values for range-specs are -oo and oo denoting minus

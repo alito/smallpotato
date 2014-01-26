@@ -61,7 +61,7 @@ typedef struct s_Cmdline {
   char bookfileP;
   char* bookfile;
   int bookfileC;
-  /***** -guiveup: Pawn values deficit at which to resign (default is 6.5, will be ignored if combined with -relative)  */
+  /***** -giveup: Pawn values deficit at which to resign (default is 6.5, will be ignored if combined with -relative)  */
   char resignP;
   float resign;
   int resignC;

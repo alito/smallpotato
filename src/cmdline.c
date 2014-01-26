@@ -74,7 +74,7 @@ static Cmdline cmd = {
   /* bookfileP = */ 0,
   /* bookfile = */ (char*)0,
   /* bookfileC = */ 0,
-  /***** -guiveup: Pawn values deficit at which to resign (default is 6.5, will be ignored if combined with -relative)  */
+  /***** -giveup: Pawn values deficit at which to resign (default is 6.5, will be ignored if combined with -relative)  */
   /* resignP = */ 0,
   /* resign = */ (float)0,
   /* resignC = */ 0,
@@ -805,7 +805,7 @@ catArgv(int argc, char **argv)
 void
 usage(void)
 {
-  fprintf(stderr,"%s","   [-help] [-V] [-random] [-complete] [-onestep] [-multistep] [-negascout] [-fixed] [-relative] [-record] [-position] [-nobook] [-noresign] [-norecord] [-log logfile] [-gamefile gamefile] [-values valuefile] [-config configfile] [-compname computername] [-book bookfile] [-guiveup resign] [-d d] [-r randomvariance] [-hs hashsize] [-hk hashkilobytes] [-mindepth epdmindepth] [-draw drawvalue] [-v verbose]\n");
+  fprintf(stderr,"%s","   [-help] [-V] [-random] [-complete] [-onestep] [-multistep] [-negascout] [-fixed] [-relative] [-record] [-position] [-nobook] [-noresign] [-norecord] [-log logfile] [-gamefile gamefile] [-values valuefile] [-config configfile] [-compname computername] [-book bookfile] [-giveup resign] [-d d] [-r randomvariance] [-hs hashsize] [-hk hashkilobytes] [-mindepth epdmindepth] [-draw drawvalue] [-v verbose]\n");
   fprintf(stderr,"%s","      IETF protocol 2 compliant chess engine\n");
   fprintf(stderr,"%s","         -help: show usage information\n");
   fprintf(stderr,"%s","            -V: show program version\n");
@@ -833,7 +833,7 @@ usage(void)
   fprintf(stderr,"%s","                1 char* value\n");
   fprintf(stderr,"%s","         -book: opening book file\n");
   fprintf(stderr,"%s","                1 char* value\n");
-  fprintf(stderr,"%s","      -guiveup: Pawn values deficit at which to resign (default is 6.5, will be ignored if combined with -relative) \n");
+  fprintf(stderr,"%s","       -giveup: Pawn values deficit at which to resign (default is 6.5, will be ignored if combined with -relative) \n");
   fprintf(stderr,"%s","                1 float value\n");
   fprintf(stderr,"%s","            -d: maximum depth of search\n");
   fprintf(stderr,"%s","                1 int value between 0 and 100\n");
@@ -980,7 +980,7 @@ parseCmdline(int argc, char **argv)
       continue;
     }
 
-    if( 0==strcmp("-guiveup", argv[i]) ) {
+    if( 0==strcmp("-giveup", argv[i]) ) {
       int keep = i;
       cmd.resignP = 1;
       i = getFloatOpt(argc, argv, i, &cmd.resign, 1);
