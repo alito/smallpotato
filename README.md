@@ -3,7 +3,7 @@ Small Potato - xboard/winboard compatible chess engine
 
 This is my attempt at a chess engine.  The code is messy and sparsely commented.  It is also very
 weak compared with other engines but still very strong compared with most humans. **It currently
-does not run in 64-bit OSes**
+does not run on 64-bit OSes**
 
 To run using xboard as a frontend, use 
 > xboard -fcp "smallpotato \[options\]"
