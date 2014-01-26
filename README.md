@@ -5,13 +5,11 @@ This is my attempt at a chess engine.  The code is messy and sparsely commented.
 weak compared with other engines but still very strong compared with most humans. **It currently
 does not run on 64-bit OSes**
 
-To run using xboard as a frontend, use 
-> xboard -fcp "smallpotato \[options\]"
-
+To run using xboard as a frontend, use  
+`xboard -fcp "smallpotato <options>"`  
 To run it through WinBoard, you will need to add something like the following to your winboard.ini:  
-> /fcp "smallpotato \[options\]" /fd "full\path\to\smallpotato\directory"  
-> /scp "smallpotato \[options\]" /sd "full\path\to\smallpotato\directory"  
-
+`/fcp "smallpotato <options>" /fd "full\path\to\smallpotato\directory"`  
+`/scp "smallpotato <options>" /sd "full\path\to\smallpotato\directory"`  
 If you are using some other interface then you should read its documentation.
 
 The preferred method of configuration is to use the configuration file.  "sp.rc" is first looked
