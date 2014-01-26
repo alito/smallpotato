@@ -26,8 +26,7 @@ BookFile = book.opn
 # NoBook = 1
 
 #The file that describes the value of the pieces is specified through
-#ValueFile = aleweights.out
-ValueFile = weights0.6.1.out
+ValueFile = weights.values
 
 #if you would like to use no valuefile at all then you should set
 # NoValueFile = 1
