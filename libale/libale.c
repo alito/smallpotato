@@ -23,7 +23,6 @@ char *fsafegets(FILE * fileInput, unsigned int chunkSize)
 		do {
 			if (fgets(inputBuffer, chunkSize, fileInput) == NULL) {
 				// Something ugly happened. Return NULL
-				free(inputBuffer);
 				if (wholeBuffer) {
 					free(wholeBuffer);
 					wholeBuffer = NULL;
