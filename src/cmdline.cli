@@ -14,7 +14,7 @@ Usage {IETF protocol 2 compliant chess engine}
 
 ## The Version specified is printed as part of the usage-message.
 ## (The value comes from `configure.in', and is inserted by `configure')
-Version {0.6.1}
+Version {0.6.990}
 
 ## Commandline specifies the name of a slot in the generated struct
 ## which will be set to a newly allocated string holding the
