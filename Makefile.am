@@ -14,8 +14,7 @@ smallpotato_SOURCES=unches.c system.h aclocal.m4 smallpotato.1 cmdline.c doIO.c 
 #  uncomment the following if unches requires the math library
 smallpotato_LDADD=$(needed_libs) -lgdbm -lpthread -lm
 
-EXTRA_DIST=smallpotato.lsm.in smallpotato.spec.in THANKS BUGS \
-	cmdline.cli aleweights aleweights.out sp.rc
+EXTRA_DIST=THANKS BUGS cmdline.cli aleweights aleweights.out sp.rc
 
 #  if you write a self-test script named `chk', uncomment the
 #  following and add `chk' to the EXTRA_DIST list
