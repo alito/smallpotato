@@ -2,9 +2,9 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.57)
-AC_INIT([Small Potato], [0.6.2], [alito@organicrobot.com])
-AM_INIT_AUTOMAKE
-AC_CONFIG_SRCDIR([unches.c])
+AC_INIT([Small Potato], [0.7.0], [alito@organicrobot.com])
+AM_INIT_AUTOMAKE([subdir-objects])
+AC_CONFIG_SRCDIR([src/unches.c])
 AC_CONFIG_HEADER([config.h])
 
 # Checks for programs.
