@@ -1,7 +1,7 @@
 Small Potato - xboard/winboard compatible chess engine
 ======================================================
 
-This is my attempt at a chess engine.  The code is messy and sparsely commented.  It is also very
+This is a chess engine.  The code is messy and sparsely commented.  It is also very
 weak compared with other engines but still very strong compared with most humans. **It currently
 does not run on 64-bit OSes**
 
@@ -11,6 +11,9 @@ To run it through WinBoard, you will need to add something like the following to
 `/fcp "smallpotato <options>" /fd "full\path\to\smallpotato\directory"`  
 `/scp "smallpotato <options>" /sd "full\path\to\smallpotato\directory"`  
 If you are using some other interface then you should read its documentation.
+
+You will also need an opening book. You can get one from http://organicrobot.com/smallpotato/book.zip or you can make
+your own by looking in the tools subdirectory.
 
 The preferred method of configuration is to use the configuration file.  "sp.rc" is first looked
 for, and if that doesn't exist, "sp.ini" is opened.  You can also specify a configuration file
