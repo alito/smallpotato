@@ -930,3 +930,7 @@ Tue 2010/09/17 Alejandro Dubrovsky <alito@organicrobot.com>
 Tue 2010/09/21 Alejandro Dubrovsky <alito@organicrobot.com>
 	negascout.c, search.c: That experiment with not doing a full quiescent search was a failure. Revert.
 	
+2014/01/26
+    Move code from SourceForge to GitHub.
+    Moved code to src subdirectory
+
