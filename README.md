@@ -2,8 +2,8 @@ Small Potato - xboard/winboard compatible chess engine
 ======================================================
 
 This is my attempt at a chess engine.  The code is messy and sparsely commented.  It is also very
-weak compared with other engines but still very strong compared with most humans. ** It currently
-does not run in 64-bit OSes **
+weak compared with other engines but still very strong compared with most humans. **It currently
+does not run in 64-bit OSes**
 
 To run using xboard as a frontend, use 'xboard -fcp "smallpotato <options>"' 
 To run it through WinBoard, you will need to add something like the following to your winboard.ini:
@@ -24,10 +24,9 @@ modify a book).  Read commands.txt in the doc directory for more information on 
 
 Small Potato used to be called unches. It extremely rarely still plays under that name in FICS.
 
-Small Potato uses clig (version 1.9.9 or greater) to take care of the command line handling.  It can
-be gotten from: http://wsd.iitb.fhg.de/~kir/clighome/ clig is no longer needed for compiling the
-distribution since cmdline.c and cmdline.h are being included, but is still needed if you are
-planning to change the command line options.
+Small Potato uses clig (version 1.9.9 or greater) to take care of the command line handling, but it
+isn't needed unless you are planning to change the command-line options.  It can
+be gotten from: http://wsd.iitb.fhg.de/~kir/clighome/
 
 Ideas were stolen/borrowed from lots of places.  Some of them follow:
 
