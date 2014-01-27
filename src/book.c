@@ -19,8 +19,10 @@
 #include "book.h"
 #include <libale.h>
 #include <gdbm.h>
+#include <inttypes.h>
 
-#define BOOK_VERSION 1
+#define BOOK_VERSION 2
+
 #define BOOK_OK 0
 #define BOOK_FAILED 1
 #define BOOK_FAILCREATE 2
@@ -40,15 +42,35 @@
 static GDBM_FILE openingBook = NULL;
 static U64 bookkeys[14][64];
 static U64 specialkeys[5];
-static U64 getBookHashKey(Board * board);
+static U64 getBookHashKey(const Board * board);
 
-struct bookMoveStructType {
-	Move move;
-	int ranking;
-};
 
-typedef struct bookMoveStructType BookMove; 
+/* We convert a move to an array of 16-bit ints to avoid compiler-dependent packing */
+typedef int32_t BookMovePart;
 
+#define MOVE_FROM 0
+#define MOVE_TO 1
+#define MOVE_PIECE 2
+#define RANKING 3
+#define BOOK_MOVE_PARTS 4
+
+
+/* Convert a move to a format suitable for storing in the opening book database */
+static void moveToBookMove(const Move *move, BookMovePart *bookMove) {
+
+	bookMove[MOVE_FROM] = x88ToStandard(move->from);
+	bookMove[MOVE_TO] = x88ToStandard(move->to);
+	bookMove[MOVE_PIECE] = move->piece;
+}
+
+/* Convert a move stored in the opening book database to a standard move */
+static void bookMoveToMove(const BookMovePart* bookMove, Move *move) {
+	move->from = standardTox88(bookMove[MOVE_FROM]);
+	move->to = standardTox88(bookMove[MOVE_TO]);
+	move->piece = bookMove[MOVE_PIECE];
+}
+
+/* Open book in filename for writing. If it doesn't exist, create it. Returns 0 on success */
 int modifyOpeningBook(char *filename) {
 	int i,j, bookversion;
 	datum key, data;
@@ -60,32 +82,32 @@ int modifyOpeningBook(char *filename) {
 		if (!openingBook) return BOOK_FAILCREATE;
 		for (i = 0; i < 14; i++) {
 			for (j = 0; j < 64; j++) {
-				bookkeys[i][j] = (((U64) ((unsigned short int) random())) << 48) + 
-									(((U64) ((unsigned short int) random())) << 32) +
-									(((U64) ((unsigned short int) random())) << 16) +
-									(((U64) ((unsigned short int) random())));
+				bookkeys[i][j] = (((U64) ((uint16_t) random())) << 48) +
+									(((U64) ((uint16_t) random())) << 32) +
+									(((U64) ((uint16_t) random())) << 16) +
+									(((U64) ((uint16_t) random())));
 			}
 		}
-		specialkeys[KEYWQCASTLE] = (((U64) ((unsigned short int) random())) << 48) + 
-										(((U64) ((unsigned short int) random())) << 32) +
-										(((U64) ((unsigned short int) random())) << 16) +
-										(((U64) ((unsigned short int) random())));
-		specialkeys[KEYWKCASTLE] = (((U64) ((unsigned short int) random())) << 48) + 
-										(((U64) ((unsigned short int) random())) << 32) +
-										(((U64) ((unsigned short int) random())) << 16) +
-										(((U64) ((unsigned short int) random())));
-		specialkeys[KEYBQCASTLE] = (((U64) ((unsigned short int) random())) << 48) + 
-										(((U64) ((unsigned short int) random())) << 32) +
-										(((U64) ((unsigned short int) random())) << 16) +
-										(((U64) ((unsigned short int) random())));
-		specialkeys[KEYBKCASTLE] = (((U64) ((unsigned short int) random())) << 48) + 
-										(((U64) ((unsigned short int) random())) << 32) +
-										(((U64) ((unsigned short int) random())) << 16) +
-										(((U64) ((unsigned short int) random())));
-		specialkeys[KEYBLACKTURN] = (((U64) ((unsigned short int) random())) << 48) + 
-										(((U64) ((unsigned short int) random())) << 32) +
-										(((U64) ((unsigned short int) random())) << 16) +
-										(((U64) ((unsigned short int) random())));
+		specialkeys[KEYWQCASTLE] = (((U64) ((uint16_t) random())) << 48) +
+										(((U64) ((uint16_t) random())) << 32) +
+										(((U64) ((uint16_t) random())) << 16) +
+										(((U64) ((uint16_t) random())));
+		specialkeys[KEYWKCASTLE] = (((U64) ((uint16_t) random())) << 48) +
+										(((U64) ((uint16_t) random())) << 32) +
+										(((U64) ((uint16_t) random())) << 16) +
+										(((U64) ((uint16_t) random())));
+		specialkeys[KEYBQCASTLE] = (((U64) ((uint16_t) random())) << 48) +
+										(((U64) ((uint16_t) random())) << 32) +
+										(((U64) ((uint16_t) random())) << 16) +
+										(((U64) ((uint16_t) random())));
+		specialkeys[KEYBKCASTLE] = (((U64) ((uint16_t) random())) << 48) +
+										(((U64) ((uint16_t) random())) << 32) +
+										(((U64) ((uint16_t) random())) << 16) +
+										(((U64) ((uint16_t) random())));
+		specialkeys[KEYBLACKTURN] = (((U64) ((uint16_t) random())) << 48) +
+										(((U64) ((uint16_t) random())) << 32) +
+										(((U64) ((uint16_t) random())) << 16) +
+										(((U64) ((uint16_t) random())));
 
 	
 		key.dsize = strlen("BOOK_VERSION") + 1;
@@ -121,13 +143,17 @@ int modifyOpeningBook(char *filename) {
 	return BOOK_OK;
 }
 
+/* Open book stored in filename for reading. Return 0 on success */
 int initialiseOpeningBook(char *filename) {
 	datum key, data;
 	
 	if ((!filename) || (!strlen(filename))) return BOOK_FAILED;
-	closeOpeningBook();
+	closeOpeningBook(); // Just in case it was open prior
+
 	openingBook = gdbm_open(filename,512, GDBM_READER,0,NULL);
 	if (!openingBook) return BOOK_FAILOPEN;
+
+	// Check book version
 	key.dsize = strlen("BOOK_VERSION") + 1;
 	key.dptr = "BOOK_VERSION";
 	data = gdbm_fetch(openingBook,key);
@@ -135,6 +161,8 @@ int initialiseOpeningBook(char *filename) {
 		closeOpeningBook();
 		return BOOK_WRONGVERSION;
 	}
+
+	// Get hashing keys
 	key.dsize = strlen("HASHKEYS") + 1;
 	key.dptr = "HASHKEYS";
 	data = gdbm_fetch(openingBook,key);
@@ -157,6 +185,7 @@ int initialiseOpeningBook(char *filename) {
 	return BOOK_OK;
 }
 
+/* Close opening book */
 void closeOpeningBook() {
 	if (openingBook == NULL) return;
 	gdbm_close(openingBook);
@@ -167,21 +196,22 @@ int getBookMove(Board *board, Move *move) {
 	datum data, key;
 	U64 hashkey;
 	int howmany, ranking, i, totalranking;
-	BookMove *allmoves;
+	BookMovePart *allmoves;
 	
 	if (openingBook == NULL) return BOOK_FAILED;
 	hashkey = getBookHashKey(board);
 	key.dsize = sizeof(hashkey);
-	key.dptr = (char *) &hashkey;
+	key.dptr = (char *) &hashkey; // Ugly serialisation
+
 	data = gdbm_fetch(openingBook,key);
 	if (data.dptr == NULL) return BOOK_NOTFOUND;
-	howmany = data.dsize / sizeof(BookMove);
+	howmany = data.dsize / (sizeof(BookMovePart) * BOOK_MOVE_PARTS);
 	if (howmany == 1) {
-		*move = ((BookMove*) (data.dptr))->move;
+		bookMoveToMove((BookMovePart*) (data.dptr), move);
 	} else {
-		allmoves = (BookMove *) data.dptr;
+		allmoves = (BookMovePart *) data.dptr;
 		totalranking = 0;
-		for (i = 0; i < howmany; i++) totalranking += allmoves[i].ranking;
+		for (i = 0; i < howmany; i++) totalranking += allmoves[i * BOOK_MOVE_PARTS + RANKING];
 		if (totalranking == 0) {
 			return BOOK_FAILED;
 		}
@@ -190,21 +220,21 @@ int getBookMove(Board *board, Move *move) {
 		i = -1;
 		do {
 			i++;
-			ranking -= allmoves[i].ranking;
+			ranking -= allmoves[i * BOOK_MOVE_PARTS + RANKING];
 		} while (ranking >= 0);
-		*move = allmoves[i].move;	
+		bookMoveToMove(&(allmoves[i * BOOK_MOVE_PARTS]), move);
 	}
 	free(data.dptr);
-	move->from = standardTox88(move->from);
-	move->to = standardTox88(move->to);
 	return BOOK_OK;	
 }
 
-int addBookMove(Board *board, Move *move) {
+/* Add move to currently open book at position board */
+int addBookMove(const Board *board, const Move *move) {
 	U64 hashkey;
 	datum key, data;
 	int howmany, i, newmove = 0, failed, found = 0;
-	BookMove *allmoves;
+	BookMovePart *allmoves;
+	Move candidate;
 	
 	if (openingBook == NULL) return BOOK_FAILED;	
 	hashkey = getBookHashKey(board);
@@ -212,41 +242,38 @@ int addBookMove(Board *board, Move *move) {
 	key.dptr = (char *) &hashkey;
 	data = gdbm_fetch(openingBook,key);
 	if (data.dptr == NULL) howmany = 0;
-	else howmany = data.dsize / sizeof(BookMove);
+	else howmany = data.dsize / (sizeof(BookMovePart) * BOOK_MOVE_PARTS);
 	if (howmany == 0) {
-		allmoves = (BookMove *) xmalloc(sizeof(BookMove));
-		allmoves[0].move.from = x88ToStandard(move->from);
-		allmoves[0].move.to = x88ToStandard(move->to);
-		allmoves[0].move.piece = move->piece;
-		allmoves[0].ranking = 1;
+		allmoves = (BookMovePart *) xmalloc(sizeof(BookMovePart) * BOOK_MOVE_PARTS);
+		moveToBookMove(move, allmoves);
+		allmoves[RANKING] = 1;
 		newmove = 1;
 	} else {
-		allmoves = (BookMove *) data.dptr;
+		allmoves = (BookMovePart *) data.dptr;
 		for (i = 0; (i < howmany) && (!found); i++) {
-			found = ((allmoves[i].move.from == x88ToStandard(move->from)) && 
-			(allmoves[i].move.to == x88ToStandard(move->to)) &&
-			(allmoves[i].move.piece == move->piece));
+			bookMoveToMove(&(allmoves[i * BOOK_MOVE_PARTS]), &candidate);
+			found = ((candidate.from == move->from) && (candidate.to == move->to) && (candidate.piece == move->piece));
 		}
 		if (i >= howmany) {
 			newmove = 1;
-			allmoves = (BookMove *) xrealloc(allmoves, sizeof(BookMove) * (howmany + 1));
-			allmoves[howmany].move.from = x88ToStandard(move->from);
-			allmoves[howmany].move.to = x88ToStandard(move->to);
-			allmoves[howmany].move.piece = move->piece;
-			allmoves[howmany].ranking = 1;
+			allmoves = (BookMovePart *) xrealloc(allmoves, sizeof(BookMovePart) * BOOK_MOVE_PARTS * (howmany + 1));
+			moveToBookMove(move, &(allmoves[howmany * BOOK_MOVE_PARTS]));
+			allmoves[howmany * BOOK_MOVE_PARTS + RANKING] = 1;
 		} else {
-			allmoves[i].ranking++;
+			allmoves[i * BOOK_MOVE_PARTS + RANKING]++;
 		}
 	}
 	if (newmove) howmany++;
 	data.dptr = (char *) allmoves;
-	data.dsize = howmany * sizeof(BookMove);
+	data.dsize = howmany * sizeof(BookMovePart) * BOOK_MOVE_PARTS;
 	failed  = gdbm_store(openingBook,key,data,GDBM_REPLACE);
 	free(allmoves);
 	if (failed) return BOOK_FAILED;
 	else return BOOK_OK;
 }
 
+
+/* Convert error code to a newly-malloced string */
 char *bookErrorToString(int error) {
 	char *temp = NULL;
 	switch (error) {
@@ -263,7 +290,8 @@ char *bookErrorToString(int error) {
 	return temp;
 }
 
-static U64 getBookHashKey(Board * board)
+/* Hash a board to a U64 according to book's keys */
+static U64 getBookHashKey(const Board * board)
 {
 	int i, wking;
 	U64 key;

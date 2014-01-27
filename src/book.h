@@ -21,10 +21,20 @@
 #include "board.h"
 
 int modifyOpeningBook(char *filename);
+
+/* Open book stored in filename for reading. Return 0 on success, non-zero on error */
 int initialiseOpeningBook(char *filename);
+
+/* Open book in filename for writing. If it doesn't exist, create it. Returns 0 on success, non-zero on error */
 int getBookMove(Board *board, Move *move);
+
+/* Close opening book */
 void closeOpeningBook();
+
+/* Convert error code to a newly-malloced string */
 char *bookErrorToString(int error);
-int addBookMove(Board *board, Move *move);
+
+/* Add move to currently open book at position board */
+int addBookMove(const Board *board, const Move *move);
 
 #endif
