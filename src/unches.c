@@ -53,7 +53,7 @@ static struct {
 	char *logfilename, *gamefilename, *valuefilename, *bookfilename, *computername;
 	int engine, verbose, evaltype, record, usevaluefile, usebook, random, maxdepth,
 	hashkilobytes, hashentries, resign, epdmindepth, drawvalue, timeaggression;
-} configvalues = {"thelog", "thegames.pgn", "aleweights.out", 
+} configvalues = {"thelog", "thegames.pgn", "weights.values",
 	"book.opn", NULL, NEGASCOUT_ENGINE,0,POSITIONPIECE_EVAL,0,1,1,0,0,32768,0,DEFAULT_RESIGN,
 	6, DEFAULT_DRAWVALUE, DEFAULT_TIME_AGGRESSION};
 
