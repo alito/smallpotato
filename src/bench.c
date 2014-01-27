@@ -111,7 +111,7 @@ void benchEPDTestSuite(Board *b,char *filename) {
 				beginquote = strchr(semicolon,'"');
 				*semicolon = '\0';
 				if (beginquote) {
-					idline = (char *) ((long) beginquote + 1);
+					idline = beginquote + 1;
 					endquote = strrchr(idline,'"');
 					if (endquote) {
 						*endquote = '\0';

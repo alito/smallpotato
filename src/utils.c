@@ -699,7 +699,7 @@ int parseRatings(char *astring, Ratings * ratings)
 int parseResult(char *astring, Result * result)
 {
 	int returnval;
-	long length;
+	size_t length;
 	char *ptr, *close;
 	returnval = 0;
 	if ((astring == NULL) || (result == NULL)) {
@@ -735,7 +735,7 @@ int parseResult(char *astring, Result * result)
 		if (*ptr == '{') {
 			close = strchr(ptr, '}');
 			if (close != NULL) {
-				length = (long) close - (long) ptr - 1;
+				length = close - ptr - 1;
 				result->comment = (char *) xmalloc(length + 1);
 				strncpy(result->comment, ptr + 1, length);
 				result->comment[length] = '\0';
@@ -941,7 +941,7 @@ static char *parseCommonFENEPD(char *fen, Board *board, int *thepalp) {
 	while ((fen[i] != '\0') && (done == 0));
 	if (done == 1) {
 		*thepalp = palp;
-		result = (char *) ((long) fen + i + 1);  /* return next character */
+		result = fen + i + 1;  /* return next character */
 	} else {
 		result = NULL;
 	}

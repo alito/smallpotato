@@ -20,18 +20,20 @@
 #include <libale.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stddef.h>
 #include "utils.h"
 
 void *doInput(void *details)
 {
 	prodcons *toProg;
 	Action action;
-	const int BUFF_INC = 1000;
+	const size_t BUFF_INC = 1000;
 	char inputBuffer[BUFF_INC], *wholeBuffer, *newline, *stripped, *theinput,
 		*firstspace, *command;
 	char *rest;
-	int temp, xboardmode = 0;
-	long retval, commandLength, currentMaxLength, currentBufferLength;
+	int temp, xboardmode = 0, done = 0;
+	size_t commandLength, currentMaxLength, currentBufferLength;
+
 
 #ifdef DEBUG	
 	FILE *debugFile;
@@ -39,16 +41,15 @@ void *doInput(void *details)
 	setlinebuf(debugFile);
 #endif
 	newline = NULL;
-	retval = (long) NULL;
 	toProg = ((threadParameter *) details)->input;
 	wholeBuffer = (char *) xmalloc(BUFF_INC);
 	currentMaxLength = BUFF_INC;
-	while ((void *) retval == NULL) {
+	while (done == 0) {
 		currentBufferLength = 0;
 		memset((void *) wholeBuffer, '\0', currentMaxLength);
 		do {
-			if (fgets(inputBuffer, sizeof inputBuffer, stdin) == NULL) {
-				retval = -1;
+			if (fgets(inputBuffer, BUFF_INC, stdin) == NULL) {
+				done = -1;
 				break;
 			}
 			currentBufferLength += BUFF_INC;
@@ -58,8 +59,8 @@ void *doInput(void *details)
 			}
 			wholeBuffer = strcat(wholeBuffer, inputBuffer);
 			newline = strchr(wholeBuffer, '\n');
-		}
-		while (newline == NULL);
+		} while (newline == NULL);
+
 		if (newline == NULL) {
 			fprintf(stderr, "Error reading from input\n");
 			continue;
@@ -78,8 +79,8 @@ void *doInput(void *details)
 				commandLength = strlen(theinput);
 				rest = NULL;
 			} else {
-				commandLength = (long) firstspace - (long) theinput;
-				rest = xstrdup((char *) ((long) firstspace + 1));
+				commandLength = firstspace - theinput;
+				rest = xstrdup(firstspace + 1);
 			}
 			/* if (rest != NULL) {
 			 * printf("rest: %s\n",rest);
@@ -104,7 +105,7 @@ void *doInput(void *details)
 			if ((strcmp(command, "SP_SANMOVE") == 0) || 
 			((!xboardmode) && (strcmp(command, "SANMOVE") == 0))) {
 				action.theType = SP_SANMOVE;
-				action.data.message = (char *) xstrdup((char *) ((long) action.command + commandLength + 1));
+				action.data.message = (char *) xstrdup(action.command + commandLength + 1);
 				if (rest != NULL) {
 					free(rest);
 					rest = NULL;
@@ -329,7 +330,7 @@ void *doInput(void *details)
 					rest = NULL;
 				}
 				action.data.message =
-					(char *) xstrdup((char *) ((long) action.command + commandLength + 1));
+					(char *) xstrdup(action.command + commandLength + 1);
 				putAction(toProg, &action);
 				goto ENDPARSE;
 			}
@@ -567,7 +568,7 @@ void *doInput(void *details)
 			if ((strcmp(command, "SP_EPDSUITE") == 0) || 
 			((!xboardmode) && (strcmp(command, "EPDSUITE") == 0))) {
 				action.theType = SP_EPDSUITE;
-				action.data.message = (char *) xstrdup((char *) ((long) action.command  + commandLength + 1));
+				action.data.message = (char *) xstrdup(action.command  + commandLength + 1);
 				if (rest != NULL) {
 					free(rest);
 					rest = NULL;
@@ -579,7 +580,7 @@ void *doInput(void *details)
 			if ((strcmp(command, "SP_EPDLINE") == 0) || 
 			((!xboardmode) && (strcmp(command, "EPDLINE") == 0))) {
 				action.theType = SP_EPDLINE;
-				action.data.message = (char *) xstrdup((char *) ((long) action.command  + commandLength + 1));
+				action.data.message = (char *) xstrdup(action.command  + commandLength + 1);
 				if (rest != NULL) {
 					free(rest);
 					rest = NULL;
@@ -591,7 +592,7 @@ void *doInput(void *details)
 			if ((strcmp(command, "SP_MODIFYBOOK") == 0) || 
 			((!xboardmode) && (strcmp(command, "MODIFYBOOK") == 0))) {
 				action.theType = SP_MODIFYBOOK;
-				action.data.message = (char *) xstrdup((char *) ((long) action.command  + commandLength + 1));
+				action.data.message = (char *) xstrdup(action.command  + commandLength + 1);
 				if (rest != NULL) {
 					free(rest);
 					rest = NULL;
@@ -673,7 +674,7 @@ void *doInput(void *details)
 #ifdef DEBUG		
 	fclose(debugFile);  
 #endif
-	return (void *) retval;
+	return NULL;
 }
 
 

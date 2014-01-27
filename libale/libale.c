@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <time.h>
+#include <stddef.h>
+#include <stdint.h>
 #include "libale.h"
 
 
@@ -86,7 +88,7 @@ char *strip(const char *astring)
 {
 	char *newstring;
 	const char* startptr, *endptr, *ptr;
-	long length;
+	size_t length;
 	if (astring == NULL) {
 		return NULL;
 	} else {
@@ -108,7 +110,7 @@ char *strip(const char *astring)
 			}
 
 			// Copy from first to last non-space character
-			length = (long) endptr - (long) startptr + 1;
+			length = endptr - startptr + 1;
 			newstring = (char *) xmalloc(length + 1);
 			memcpy(newstring, startptr, length);
 			newstring[length] = '\0';
@@ -122,7 +124,7 @@ char *stripall(const char *astring, char achar)
 {
 	char *newstring;
 	const char* startptr;
-	long length, current;
+	size_t length, current;
 
 	// Nothing to strip or nothing there
 	if ((astring == NULL) || (achar == '\0')) {
