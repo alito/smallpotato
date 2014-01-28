@@ -934,3 +934,7 @@ Tue 2010/09/21 Alejandro Dubrovsky <alito@organicrobot.com>
     Move code from SourceForge to GitHub.
     Moved code to src subdirectory
 
+2014/01/27
+    Make code run in 64-bit OSes.
+    Make book code more resistant to compiler struct-packing choices
+    
