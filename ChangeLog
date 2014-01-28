@@ -937,4 +937,4 @@ Tue 2010/09/21 Alejandro Dubrovsky <alito@organicrobot.com>
 2014/01/27
     Make code run in 64-bit OSes.
     Make book code more resistant to compiler struct-packing choices
-    
+    WACing at 280/300 at 10 seconds on an i7 870 @2.93GHz
