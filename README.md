@@ -12,8 +12,7 @@ To run it through WinBoard, you will need to add something like the following to
 `/scp "smallpotato <options>" /sd "full\path\to\smallpotato\directory"`  
 If you are using some other interface then you should read its documentation.
 
-You will also need an opening book. You can get one from http://organicrobot.com/smallpotato/book.zip or you can make
-your own by looking in the tools subdirectory.
+You will also need an opening book. You can get one from http://organicrobot.com/smallpotato/book64.opn.bz2 for 64-bit systems or you can make your own by looking in the tools subdirectory. There are no pre-created books for 32-bit systems.
 
 The preferred method of configuration is to use the configuration file.  "sp.rc" is first looked
 for, and if that doesn't exist, "sp.ini" is opened.  You can also specify a configuration file
@@ -26,11 +25,14 @@ all, or read doc/help.txt if you don't see anything when you run it (some window
 Most of the program control is done through commands during the running of the program (eg to create or
 modify a book).  Read commands.txt in the doc directory for more information on these.
 
-Small Potato used to be called unches. It extremely rarely still plays under that name in FICS.
+For the opening book, Small Potato uses gdbm which you can get from http://www.gnu.org.ua/software/gdbm/  
+Anything 1.x post 1.8.3 should work. Due to gdbm files not being portable between 32- and 64-bit systems, you'll need a different opening book depending on your system.
 
 Small Potato uses clig (version 1.9.9 or greater) to take care of the command line handling, but it
 isn't needed unless you are planning to change the command-line options.  It can
 be gotten from: http://wsd.iitb.fhg.de/~kir/clighome/
+
+Small Potato used to be called unches. It extremely rarely still plays under that name in FICS.
 
 Ideas were stolen/borrowed from lots of places.  Some of them follow:
 
