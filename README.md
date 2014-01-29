@@ -1,9 +1,9 @@
 Small Potato - xboard/winboard compatible chess engine
 ======================================================
 
-This is a chess engine.  The code is messy and sparsely commented.  It is also very
-weak compared with other engines but still very strong compared with most humans. **It currently
-does not run on 64-bit OSes**
+This is an old chess engine that saw more actove development during 2000-2003.  The code is messy and sparsely commented.  It is also very weak compared with other engines but still very strong compared with most humans. 
+
+Compilation follows the usual `./confgure; make`.  make install will install the binary but it is easier to just copy it where you need it.
 
 To run using xboard as a frontend, use  
 `xboard -fcp "smallpotato <options>"`  
@@ -12,7 +12,7 @@ To run it through WinBoard, you will need to add something like the following to
 `/scp "smallpotato <options>" /sd "full\path\to\smallpotato\directory"`  
 If you are using some other interface then you should read its documentation.
 
-You will also need an opening book. You can get one from http://organicrobot.com/smallpotato/book64.opn.bz2 for 64-bit systems or you can make your own by looking in the tools subdirectory. There are no pre-created books for 32-bit systems.
+You will also need an opening book. You can get one from http://organicrobot.com/smallpotato/book64.opn.bz2 for 64-bit systems, http://organicrobot.com/smallpotato/book32.opn.bz2 for 32-bit or you can make your own by looking at makebookfrompgn.py in the tools subdirectory. The book above was created by feeding Arturo Ochoa's collection of GM games into it.
 
 The preferred method of configuration is to use the configuration file.  "sp.rc" is first looked
 for, and if that doesn't exist, "sp.ini" is opened.  You can also specify a configuration file
