@@ -33,12 +33,10 @@ class EngineConnector(object):
         self.process.stdin.write('sp_closebook\n')
         self.process.stdin.write('QUIT\n')
         self.process.stdin.flush()
-        output = self.process.stdout.read()
-        return output
-
 
 
     def processFile(self, fin):
+        Results = ['1-0','0-1','1/2-1/2']
 
         for line in fin:
             if not line.strip():
@@ -57,6 +55,10 @@ class EngineConnector(object):
                 # cxd5 Nbd7 10.Nge2 Nc5 11.Bc2 a5 12.O-O Bd7 13.a3 Nh5 14.b4 axb4 15.axb4
                 moves = line.split()
                 for move in moves:
+                    if move in Results:
+                        # if we get a result, game is done
+                        currentply = self.maxPly + 1
+                        break
                     dot = move.find('.')
                     if dot >= 0:
                         move = move[dot + 1:].strip()
@@ -78,7 +80,7 @@ def main(args):
 
     parser.add_argument("-b", "--book", dest="book", default=DefaultBook,
                       help="Book to create/add to (default: %(default)s)")
-    parser.add_argument("-p", "--ply", dest="ply", default=DefaultMaxPly,
+    parser.add_argument("-p", "--ply", dest="ply", default=DefaultMaxPly, type=int,
                       help="Number of plies from each game to process (default: %(default)s)")    
     parser.add_argument("-e", "--executable", dest="executable", default=DefaultExecutable,
                       help="Smallpotato executable to call (default: %(default)s)")
