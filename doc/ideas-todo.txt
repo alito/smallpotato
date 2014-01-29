@@ -6,4 +6,5 @@ keep bitpieces of each piece type
 do quick check-generation based on above and destination bitpieces.
 switch to bitboards
 play with higher level control structures
+classify on whether it's a quiet position or not and switch evaluation function depending on that
 
