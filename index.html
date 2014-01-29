@@ -65,7 +65,15 @@ To run it through WinBoard, you will need to add something like the following to
 </ul><p>More information on the README</p>
 
 <h3>
-<a name="250903---061" class="anchor" href="#250903---061"><span class="octicon octicon-link"></span></a>25/09/03 - 0.6.1</h3>
+<a name="30012014---070" class="anchor" href="#30012014---070"><span class="octicon octicon-link"></span></a>30/01/2014 - 0.7.0</h3>
+
+<ul>
+<li>Works on 64-bit systems</li>
+<li>Extremely minor tweaking of evaluation (of most likely no consequence)</li>
+<li>Fixed a bug where it could make an illegal move on the 50th move of a 50-move draw.</li>
+<li>Note that the book format changed. Books are also not interchangeable between 32- and 64-bit systems</li>
+</ul><h3>
+<a name="25092003---061" class="anchor" href="#25092003---061"><span class="octicon octicon-link"></span></a>25/09/2003 - 0.6.1</h3>
 
 <ul>
 <li>Tweaked move ordering (including addition of killer move heuristic)</li>
@@ -74,7 +82,7 @@ To run it through WinBoard, you will need to add something like the following to
 <li>Removed MTD(f) and standard alpha-beta search as search options</li>
 <li>Bugfixes (including K v K draw claim)</li>
 </ul><h3>
-<a name="170902---060" class="anchor" href="#170902---060"><span class="octicon octicon-link"></span></a>17/09/02 - 0.6.0</h3>
+<a name="17092002---060" class="anchor" href="#17092002---060"><span class="octicon octicon-link"></span></a>17/09/2002 - 0.6.0</h3>
 
 <ul>
 <li>Added null-move pruning and aspiration window.</li>
@@ -83,7 +91,7 @@ To run it through WinBoard, you will need to add something like the following to
 <li>Slightly friendlier command line mode.</li>
 <li>Minor bugfixes (fen/epd parsing).</li>
 </ul><h3>
-<a name="180802---051" class="anchor" href="#180802---051"><span class="octicon octicon-link"></span></a>18/08/02 - 0.5.1</h3>
+<a name="18082002---051" class="anchor" href="#18082002---051"><span class="octicon octicon-link"></span></a>18/08/2002 - 0.5.1</h3>
 
 <ul>
 <li>Now can be configured through file.</li>
@@ -91,7 +99,7 @@ To run it through WinBoard, you will need to add something like the following to
 <li>Switched, and very slightly tweaked, default evaluation function.</li>
 <li>Speeded up by about 20%.</li>
 </ul><h3>
-<a name="030802---050" class="anchor" href="#030802---050"><span class="octicon octicon-link"></span></a>03/08/02 - 0.5.0</h3>
+<a name="03082002---050" class="anchor" href="#03082002---050"><span class="octicon octicon-link"></span></a>03/08/2002 - 0.5.0</h3>
 
 <ul>
 <li>Switched default search algorithm to negascout</li>
@@ -100,13 +108,13 @@ To run it through WinBoard, you will need to add something like the following to
 <li>Minor fixes of bugs introduced in 0.4.0</li>
 <li>Now compiles out-of-the-box in clig-less systems.</li>
 </ul><h3>
-<a name="170702---040" class="anchor" href="#170702---040"><span class="octicon octicon-link"></span></a>17/07/02 - 0.4.0</h3>
+<a name="17072002---040" class="anchor" href="#17072002---040"><span class="octicon octicon-link"></span></a>17/07/2002 - 0.4.0</h3>
 
 <ul>
 <li>Implemented move now and analyze.</li>
 <li>Switched to 0x88 move generation.</li>
 </ul><h3>
-<a name="110402---033" class="anchor" href="#110402---033"><span class="octicon octicon-link"></span></a>11/04/02 - 0.3.3</h3>
+<a name="11042002---033" class="anchor" href="#11042002---033"><span class="octicon octicon-link"></span></a>11/04/2002 - 0.3.3</h3>
 
 <ul>
 <li>Added opening book.</li>
@@ -116,20 +124,20 @@ To run it through WinBoard, you will need to add something like the following to
 <li>Can now specify hashtable size in kilobytes.</li>
 <li>Made aleweights.out be loaded by default</li>
 </ul><h3>
-<a name="030402---032" class="anchor" href="#030402---032"><span class="octicon octicon-link"></span></a>03/04/02 - 0.3.2</h3>
+<a name="03042002---032" class="anchor" href="#03042002---032"><span class="octicon octicon-link"></span></a>03/04/2002 - 0.3.2</h3>
 
 <ul>
 <li>No changes (reflex action release that shouldn't have </li>
 <li>happened due to unkown last release)</li>
 </ul><h3>
-<a name="080302---031" class="anchor" href="#080302---031"><span class="octicon octicon-link"></span></a>08/03/02 - 0.3.1</h3>
+<a name="08032002---031" class="anchor" href="#08032002---031"><span class="octicon octicon-link"></span></a>08/03/2002 - 0.3.1</h3>
 
 <ul>
 <li>Changed to delayed checking of check for speculated performance improvement (even though it does not seem to have materialised)</li>
 <li>Got rid of a couple of often used functions with array lookups for definite performance gains.</li>
 <li>Completed switch to move/unmove.</li>
 </ul><h3>
-<a name="260202---030" class="anchor" href="#260202---030"><span class="octicon octicon-link"></span></a>26/02/02 - 0.3.0</h3>
+<a name="26022002---030" class="anchor" href="#26022002---030"><span class="octicon octicon-link"></span></a>26/02/2002 - 0.3.0</h3>
 
 <ul>
 <li>Changed name to Small Potato</li>
@@ -138,7 +146,7 @@ To run it through WinBoard, you will need to add something like the following to
 <li>(Note:  Search instability noted in previous version is "meant" to be there. Caused by the nature of transposition tables, not by some bug in implementation)</li>
 <li>No bugfixes</li>
 </ul><h3>
-<a name="071101---024" class="anchor" href="#071101---024"><span class="octicon octicon-link"></span></a>07/11/01 - 0.2.4</h3>
+<a name="07112001---024" class="anchor" href="#07112001---024"><span class="octicon octicon-link"></span></a>07/11/2001 - 0.2.4</h3>
 
 <ul>
 <li>Better randomised play</li>
@@ -146,7 +154,7 @@ To run it through WinBoard, you will need to add something like the following to
 <li>Lots of bugfixes, including the crash on start introduced in v0.2.3, PGN output bugfixes, and some silliness in QuiescentSearch.</li>
 <li>(NOTE:  Search instability still there)</li>
 </ul><h3>
-<a name="201001---023" class="anchor" href="#201001---023"><span class="octicon octicon-link"></span></a>20/10/01 - 0.2.3</h3>
+<a name="20102001---023" class="anchor" href="#20102001---023"><span class="octicon octicon-link"></span></a>20/10/2001 - 0.2.3</h3>
 
 <ul>
 <li>Added history ordering</li>
@@ -154,38 +162,38 @@ To run it through WinBoard, you will need to add something like the following to
 <li>PGN output for game recording.</li>
 <li>Bugfixes</li>
 </ul><h3>
-<a name="131001---022" class="anchor" href="#131001---022"><span class="octicon octicon-link"></span></a>13/10/01 - 0.2.2</h3>
+<a name="13102001---022" class="anchor" href="#13102001---022"><span class="octicon octicon-link"></span></a>13/10/2001 - 0.2.2</h3>
 
 <ul>
 <li>Changed GPL license</li>
 <li>Added quiescent search</li>
 <li>Bugfixes</li>
 </ul><h3>
-<a name="091001---021" class="anchor" href="#091001---021"><span class="octicon octicon-link"></span></a>09/10/01 - 0.2.1</h3>
+<a name="09102001---021" class="anchor" href="#09102001---021"><span class="octicon octicon-link"></span></a>09/10/2001 - 0.2.1</h3>
 
 <ul>
 <li>Added internal iterative deepening</li>
 <li>Bugfixes</li>
 </ul><h3>
-<a name="031001---020" class="anchor" href="#031001---020"><span class="octicon octicon-link"></span></a>03/10/01 - 0.2.0</h3>
+<a name="03102001---020" class="anchor" href="#03102001---020"><span class="octicon octicon-link"></span></a>03/10/2001 - 0.2.0</h3>
 
 <ul>
 <li>Switched to MTD(f)</li>
 <li>Bugfixes</li>
 </ul><h3>
-<a name="011001---015" class="anchor" href="#011001---015"><span class="octicon octicon-link"></span></a>01/10/01 - 0.1.5</h3>
+<a name="01102001---015" class="anchor" href="#01102001---015"><span class="octicon octicon-link"></span></a>01/10/2001 - 0.1.5</h3>
 
 <ul>
 <li>Bit of documentation.</li>
 <li>Fixed the hashtable (maybe)</li>
 </ul><h3>
-<a name="011001---014" class="anchor" href="#011001---014"><span class="octicon octicon-link"></span></a>01/10/01 - 0.1.4</h3>
+<a name="01102001---014" class="anchor" href="#01102001---014"><span class="octicon octicon-link"></span></a>01/10/2001 - 0.1.4</h3>
 
 <ul>
 <li>Improved packaging.</li>
 <li>Couple of bugfixes.</li>
 </ul><h3>
-<a name="160401---013" class="anchor" href="#160401---013"><span class="octicon octicon-link"></span></a>16/04/01 - 0.1.3</h3>
+<a name="16042001---013" class="anchor" href="#16042001---013"><span class="octicon octicon-link"></span></a>16/04/2001 - 0.1.3</h3>
 
 <ul>
 <li>Switched to Zobrist hashing.</li>
@@ -193,13 +201,13 @@ To run it through WinBoard, you will need to add something like the following to
 <li>Added runtime evaluation board loading</li>
 <li>Lots of bugfixes (especially hashtable)</li>
 </ul><h3>
-<a name="140301---012" class="anchor" href="#140301---012"><span class="octicon octicon-link"></span></a>14/03/01 - 0.1.2</h3>
+<a name="14032001---012" class="anchor" href="#14032001---012"><span class="octicon octicon-link"></span></a>14/03/2001 - 0.1.2</h3>
 
 <ul>
 <li>Added hashtable.</li>
 <li>Lots of bugfixes.</li>
 </ul><h3>
-<a name="140201---011" class="anchor" href="#140201---011"><span class="octicon octicon-link"></span></a>14/02/01 - 0.1.1</h3>
+<a name="14022001---011" class="anchor" href="#14022001---011"><span class="octicon octicon-link"></span></a>14/02/2001 - 0.1.1</h3>
 
 <ul>
 <li>Added first move move ordering.</li>
@@ -207,7 +215,7 @@ To run it through WinBoard, you will need to add something like the following to
 <li>Better logging and recording</li>
 <li>Lots of bugfixes</li>
 </ul><h3>
-<a name="251200---010" class="anchor" href="#251200---010"><span class="octicon octicon-link"></span></a>25/12/00 - 0.1.0</h3>
+<a name="25122000---010" class="anchor" href="#25122000---010"><span class="octicon octicon-link"></span></a>25/12/2000 - 0.1.0</h3>
 
 <ul>
 <li>Initial release</li>
