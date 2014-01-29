@@ -1,3 +1,9 @@
+###30/01/2014 - 0.7.0
+* Works on 64-bit systems
+* Extremely minor tweaking of evaluation (of most likely no consequence)
+* Fixed a bug where it could make an illegal move on the 50th move of a 50-move draw.
+* Note that the book format changed. Books are also not interchangeable between 32- and 64-bit systems
+
 ###25/09/03 - 0.6.1
 * Tweaked move ordering (including addition of killer move heuristic)
 * Minor tweaking of evaluation (with unknown consequences)
