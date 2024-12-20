@@ -45,6 +45,22 @@ const int diagtopright[64] = {
 
 const Move NOMOVE = {0,0,NOTHING};
 
+
+int knightMoves[128][9]  = {{0}};
+int rookMoves[128][15]   = {{0}};
+int bishopMoves[128][14] = {{0}};
+int queenMoves[128][28]  = {{0}};
+int wkingMoves[128][9]   = {{0}};
+int bkingMoves[128][9]   = {{0}};
+int wpawnMoves[128][5]   = {{0}};
+int bpawnMoves[128][5]   = {{0}};
+
+int pieceMoves[NOTHING + 1][128][28] = {{{0}}};
+
+generateMoveFunction generateMoves[NOTHING + 1];
+generateMoveFunctionConstant generateCaptures[NOTHING + 1];
+
+
 /* slow function to check if a piece can move from one square to another.  To be used
 	in non-performance-critical bits only */
 int pieceCanMove(Board *b, int from, int to) {

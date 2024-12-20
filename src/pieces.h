@@ -22,16 +22,16 @@
 
 
 
-int knightMoves[128][9];
-int rookMoves[128][15];
-int bishopMoves[128][14];
-int queenMoves[128][28];
-int wkingMoves[128][9];
-int bkingMoves[128][9];
-int wpawnMoves[128][5];
-int bpawnMoves[128][5];
+extern int knightMoves[128][9];
+extern int rookMoves[128][15];
+extern int bishopMoves[128][14];
+extern int queenMoves[128][28];
+extern int wkingMoves[128][9];
+extern int bkingMoves[128][9];
+extern int wpawnMoves[128][5];
+extern int bpawnMoves[128][5];
 
-int pieceMoves[NOTHING + 1][128][28];
+extern int pieceMoves[NOTHING + 1][128][28];
 
 
 /*typedef int (*canMoveFunction) (Board *, int, int); 
@@ -39,9 +39,9 @@ int pieceMoves[NOTHING + 1][128][28];
 */
 
 typedef int (*generateMoveFunction) (Board *, int, Move *, int); /* from, movelist, index */
-generateMoveFunction generateMoves[NOTHING + 1];
+extern generateMoveFunction generateMoves[NOTHING + 1];
 typedef int (*generateMoveFunctionConstant) (const Board *, int, Move *, int); /* from, movelist, index */
-generateMoveFunctionConstant generateCaptures[NOTHING + 1];
+extern generateMoveFunctionConstant generateCaptures[NOTHING + 1];
 
 void initialiseMoveLists();
 void initialisePieceCanMoveFunctions();

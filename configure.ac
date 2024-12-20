@@ -1,11 +1,11 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ(2.57)
-AC_INIT([Small Potato], [0.7.0], [alito@organicrobot.com])
+AC_PREREQ([2.71])
+AC_INIT([Small Potato],[0.7.0],[alito@organicrobot.com])
 AM_INIT_AUTOMAKE([subdir-objects])
 AC_CONFIG_SRCDIR([src/unches.c])
-AC_CONFIG_HEADER([config.h])
+AC_CONFIG_HEADERS([config.h])
 
 # Checks for programs.
 AC_PROG_CC
@@ -20,7 +20,7 @@ AC_CHECK_LIB([pthread], [pthread_create],,[AC_MSG_ERROR(Need the pthread threadi
 # Checks for header files.
 AC_FUNC_ALLOCA
 AC_HEADER_DIRENT
-AC_HEADER_STDC
+
 AC_HEADER_MAJOR
 AC_CHECK_HEADERS([error.h fcntl.h float.h libintl.h limits.h locale.h memory.h stdlib.h string.h strings.h sys/file.h sys/param.h sys/time.h unistd.h utime.h])
 
@@ -31,14 +31,14 @@ AC_C_INLINE
 AC_TYPE_OFF_T
 AC_TYPE_SIZE_T
 AC_CHECK_MEMBERS([struct stat.st_blksize])
-AC_HEADER_TIME
+AC_CHECK_HEADERS_ONCE([sys/time.h])
+
 AC_STRUCT_TM
 
 # Checks for library functions.
 AC_FUNC_ERROR_AT_LINE
 AC_FUNC_MALLOC
 AC_FUNC_REALLOC
-AC_FUNC_SETVBUF_REVERSED
 AC_FUNC_STRTOD
 AC_CHECK_FUNCS([gettimeofday memchr memset strchr strrchr strtol])
 
