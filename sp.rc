@@ -20,7 +20,7 @@ LogFile = thelog
 GameFile = thegames.pgn
 
 #The opening book to be used can be specified through
-BookFile = book.opn
+BookFile = book64.opn
 
 #if you would rather not use an opening book then you should set
 # NoBook = 1

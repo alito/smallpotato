@@ -1,7 +1,7 @@
 Small Potato - xboard/winboard compatible chess engine
 ======================================================
 
-This is an old chess engine that saw more actove development during 2000-2003.  The code is messy and sparsely commented.  It is also very weak compared with other engines but still very strong compared with most humans. 
+This is an old chess engine that saw more active development during 2000-2003.  The code is messy and sparsely commented.  It is also very weak compared with other engines but still very strong compared with most humans. 
 
 Compilation follows the usual `./confgure; make`.  make install will install the binary but it is easier to just copy it where you need it.
 
@@ -12,7 +12,10 @@ To run it through WinBoard, you will need to add something like the following to
 `/scp "smallpotato <options>" /sd "full\path\to\smallpotato\directory"`  
 If you are using some other interface then you should read its documentation.
 
-You will also need an opening book. You can get one from http://organicrobot.com/smallpotato/book64.opn.bz2 for 64-bit systems, http://organicrobot.com/smallpotato/book32.opn.bz2 for 32-bit or you can make your own by looking at makebookfrompgn.py in the tools subdirectory. The book above was created by feeding Arturo Ochoa's collection of GM games into it.
+You will also need an opening book. You can get one from 
+- https://alito.github.io/smallpotato/book64.zip for 64-bit systems
+- https://alito.github.io/smallpotato/book32.zip for 32-bit systems
+or you can make your own by looking at makebookfrompgn.py in the tools subdirectory. The book above was created by feeding Arturo Ochoa's collection of GM games into it.
 
 The preferred method of configuration is to use the configuration file.  "sp.rc" is first looked
 for, and if that doesn't exist, "sp.ini" is opened.  You can also specify a configuration file
@@ -31,8 +34,6 @@ Anything 1.x post 1.8.3 should work. Due to gdbm files not being portable betwee
 Small Potato uses clig (version 1.9.9 or greater) to take care of the command line handling, but it
 isn't needed unless you are planning to change the command-line options.  It can
 be gotten from: http://wsd.iitb.fhg.de/~kir/clighome/
-
-Small Potato used to be called unches. It extremely rarely still plays under that name in FICS.
 
 Ideas were stolen/borrowed from lots of places.  Some of them follow:
 
