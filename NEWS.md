@@ -1,3 +1,6 @@
+###20/12/2024 - 0.7.1
+* Compiles again 
+
 ###30/01/2014 - 0.7.0
 * Works on 64-bit systems
 * Extremely minor tweaking of evaluation (of most likely no consequence)
