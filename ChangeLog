@@ -945,4 +945,9 @@ Tue 2010/09/21 Alejandro Dubrovsky <alito@organicrobot.com>
 
 2024/12/20
     Fixing compilation thanks to report and code by Roelof Berkepeis
-    Releaseing 0.7.1
+    Releasing 0.7.1
+
+2024/12/21
+    Added compile script needed for new autotools setup
+    Releasing 0.7.2
+

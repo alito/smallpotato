@@ -1,5 +1,8 @@
+###21/12/2024 - 0.7.2
+* Now it compiles again 
+
 ###20/12/2024 - 0.7.1
-* Compiles again 
+* Compiles again (edit: no it doesn't) 
 
 ###30/01/2014 - 0.7.0
 * Works on 64-bit systems

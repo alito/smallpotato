@@ -849,7 +849,7 @@ usage(void)
   fprintf(stderr,"%s","                1 int value\n");
   fprintf(stderr,"%s","            -v: verbosity level\n");
   fprintf(stderr,"%s","                1 int value between 0 and oo\n");
-  fprintf(stderr,"%s","  version: 0.7.1\n");
+  fprintf(stderr,"%s","  version: 0.7.2\n");
   fprintf(stderr,"%s","  ");
   exit(EXIT_FAILURE);
 }
